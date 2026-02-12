@@ -1,0 +1,192 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('./assets/font/PlusJakartaSans-VariableFont_wght.ttf');
+  font-weight: 100 900; 
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  /* 1. Raw Palette (Presets) */
+  --color-preset-white: #ffffff;
+  --color-preset-black: #000112;
+  --color-preset-purple: #635fc7;
+  --color-preset-purple-hover: #a8a4ff;
+  --color-preset-red: #ea5555;
+  --color-preset-red-hover: #ff9898;
+  
+  /* Gray Scale Presets */
+  --color-preset-gray-100: #f4f7fd;
+  --color-preset-gray-200: #e4ebfa;
+  --color-preset-gray-300: #828fa3;
+  --color-preset-gray-400: #3e3f4e;
+  --color-preset-gray-500: #2b2c37;
+  --color-preset-gray-600: #20212c;
+
+  /* 2. Functional Tokens (Roles) */
+  --color-background: var(--color-preset-gray-100);
+  --color-background-secondary: var(--color-preset-white);
+  --color-foreground: var(--color-preset-black);
+  --color-foreground-secondary: var(--color-preset-gray-300);
+  --color-border: var(--color-preset-gray-200);
+
+  --color-interactive-dynamic: rgba(99, 95, 199, 0.2);
+
+  --color-primary: var(--color-preset-purple);
+  --color-primary-hover: var(--color-preset-purple-hover);
+  --color-danger: var(--color-preset-red);
+  --color-danger-hover: var(--color-preset-red-hover);
+
+  /* 3. Typography Tokens */
+  --font-sans: "Plus Jakarta Sans";
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  --font-size-h-xl: 1.5rem;
+  --line-height-h-xl: 1;
+  --font-size-h-lg: 1.125rem;
+  --line-height-h-lg: 1.33;
+  --font-size-h-md: 0.938rem;
+  --line-height-h-md: 1.06;
+  --font-size-h-sm: 0.75rem;
+  --line-height-h-sm: 1.33;
+  --font-size-body-lg: 0.813rem;
+  --line-height-body-lg: 1.77;
+
+  /* 4. Spacing & Shape */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 250ms ease-in-out;
+}
+
+@layer base {
+    *, *::before, *::after {
+    transition-property: color, background-color, border-color, fill, stroke;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+  }
+  .dark {
+    /* Swap Functional Tokens to Dark Presets */
+    --color-background: var(--color-preset-gray-600);
+    --color-background-secondary: var(--color-preset-gray-500);
+    --color-foreground: var(--color-preset-white);
+    --color-border: var(--color-preset-gray-400);
+    --color-preset-black: var(--color-preset-white);
+
+    --color-interactive-dynamic: var(--color-preset-white);
+    
+    /* Mapping your gray utilities to dark equivalents */
+    --color-gray-100: var(--color-preset-gray-500);
+    --color-gray-200: var(--color-preset-gray-400);
+  }
+}
+
+/* Utilities remain the same as they use the functional variable names */
+@utility text-h-xl {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-h-xl);
+  line-height: var(--line-height-h-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+@utility text-h-lg {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-h-lg);
+  line-height: var(--line-height-h-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+@utility text-h-md {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-h-md);
+  line-height: var(--line-height-h-md);
+  font-weight: var(--font-weight-bold);
+}
+
+@utility text-h-sm {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-h-sm);
+  line-height: var(--line-height-h-sm);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+}
+
+@utility text-body-lg {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-body-lg);
+  line-height: var(--line-height-body-lg);
+  font-weight: var(--font-weight-medium);
+}
+
+@utility text-body-md {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  line-height: 1.33;
+  font-weight: var(--font-weight-bold);
+}
+
+@utility focus-primary {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(99, 95, 199, 0.5);
+}
+
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  border-radius: 24px;
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-sans);
+}
+
+@utility btn-variant-primary {
+  background-color: var(--color-primary);
+  color: white;
+  &:hover { background-color: var(--color-primary-hover); }
+}
+
+@utility btn-variant-secondary {
+  background-color: rgba(99, 95, 199, 0.1);
+  color: var(--color-primary);
+  &:hover { background-color: rgba(99, 95, 199, 0.25); }
+}
+
+@utility btn-variant-destructive {
+  background-color: var(--color-danger);
+  color: white;
+  &:hover { background-color: var(--color-danger-hover); }
+}
+
+@utility btn-size-lg {
+  width: 100%;
+  height: 48px;
+  font-size: var(--font-size-h-md);
+}
+
+@utility btn-size-md {
+  padding: 0.75rem 1.5rem;
+  height: 40px;
+  font-size: 13px;
+}
+
+@utility btn-size-sm {
+  padding: 0.5rem 1rem;
+  height: 32px;
+  font-size: 12px;
+}
