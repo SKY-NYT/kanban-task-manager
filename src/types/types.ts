@@ -1,4 +1,4 @@
-/* src/types/types.ts */
+
 
 export interface Subtask {
   title: string;
