@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useApp } from "../../hooks/useApp";
+import { useKanbanStore } from "../../store/useKanbanStore";
 import Modal from "../atoms/Modal";
 import { Text } from "../atoms/Text";
 import TextField from "../atoms/TextField";
@@ -11,7 +11,7 @@ import type { Task, Subtask, Column } from "../../types/types";
 
 export default function EditTaskModal() {
   const { boardId, taskId } = useParams();
-  const { data } = useApp();
+  const { data } = useKanbanStore();
   
   
   const boardIndex = boardId ? Number(boardId) : 0;

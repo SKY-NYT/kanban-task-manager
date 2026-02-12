@@ -1,12 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import { Text } from "../components/atoms/Text";
-import { useApp } from "../hooks/useApp";
+import { useKanbanStore } from "../store/useKanbanStore";
 import { Outlet } from "react-router-dom";
 import Button from "../components/atoms/Buttons";
 
 export default function BoardView() {
   const { boardId } = useParams();
-  const { data, sidebarVisible } = useApp();
+  const { data, sidebarVisible } = useKanbanStore();
   const boards = data.boards ?? [];
   const index = boardId ? Number(boardId) : 0;
   const board = boards[index];

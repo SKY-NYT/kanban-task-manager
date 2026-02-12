@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useApp } from "../../hooks/useApp";
+import { useKanbanStore } from "../../store/useKanbanStore";
 import Modal from "../atoms/Modal";
 import { Text } from "../atoms/Text";
 import Button from "../atoms/Buttons";
@@ -7,9 +7,8 @@ import Button from "../atoms/Buttons";
 export default function DeleteBoardModal() {
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const { data, setData } = useApp();
+  const { data, setData } = useKanbanStore();
 
-  // Find the board name for the descriptive text
   const bIndex = boardId ? Number(boardId) : 0;
   const boardName = data.boards?.[bIndex]?.name || "";
 

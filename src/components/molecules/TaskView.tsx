@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useApp } from "../../hooks/useApp";
+import { useKanbanStore } from "../../store/useKanbanStore";
 import { Text } from "../atoms/Text";
 import Modal from "../atoms/Modal";
 import Dropdown from "../atoms/Dropdown";
@@ -10,7 +10,7 @@ import type { Subtask, Task, Column } from "../../types/types";
 export default function TaskView() {
   const { boardId, taskId } = useParams();
   const navigate = useNavigate();
-  const { data } = useApp();
+  const { data } = useKanbanStore();
   const boards = data.boards ?? [];
 
   const bIndex = boardId ? Number(boardId) : 0;

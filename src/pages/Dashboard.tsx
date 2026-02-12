@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import { useApp } from "../hooks/useApp";
+import { useKanbanStore } from "../store/useKanbanStore";
 import { Text } from "../components/atoms/Text";
 import Button from "../components/atoms/Buttons";
 
 export default function Dashboard() {
-  const { data, sidebarVisible } = useApp();
+  const { data, sidebarVisible } = useKanbanStore();
   const boards = data.boards ?? [];
 
   if (boards.length === 0) {

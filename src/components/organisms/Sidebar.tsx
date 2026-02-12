@@ -6,15 +6,15 @@ import IconHideSidebar from "../../assets/images/icon-hide-sidebar.svg?react";
 import IconShowSidebar from "../../assets/images/icon-show-sidebar.svg?react";
 import IconDarkTheme from "../../assets/images/icon-dark-theme.svg?react";
 import IconLightTheme from "../../assets/images/icon-light-theme.svg?react";
-import { useApp } from "../../hooks/useApp";
-import { useTheme } from "../../hooks/useTheme";
+import { useKanbanStore } from "../../store/useKanbanStore";
+
 
 
 
 export default function Sidebar() {
-  const { data, sidebarVisible, toggleSidebar } = useApp();
+  const { data, sidebarVisible, toggleSidebar } = useKanbanStore();
   const boards = data.boards ?? [];
-    const { theme, toggleTheme } = useTheme();
+    const { theme, toggleTheme } = useKanbanStore();
   return (
     <>
       <div className={`
