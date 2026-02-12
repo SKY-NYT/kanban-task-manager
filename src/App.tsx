@@ -17,10 +17,8 @@ import EditBoardModal from "./components/molecules/EditBoardModal";
 export default function App() {
   return (
     <Routes>
-      
       <Route path="/login" element={<Login />} />
 
-      
       <Route
         element={
           <ProtectedRoute>
@@ -32,18 +30,22 @@ export default function App() {
         <Route path="add-board" element={<AddBoardModal />} />
         <Route path="add-task" element={<AddTaskModal />} />
         <Route path="delete-board" element={<DeleteBoardModal />} />
-        <Route path="delete-task" element={<DeleteTaskModal />} />
         <Route path="edit-board" element={<EditBoardModal />} />
-        <Route path="board/:boardId/edit-task/:taskId" element={<EditTaskModal />} />
-        
+        <Route
+          path="board/:boardId/edit-task/:columnIndex/:taskIndex"
+          element={<EditTaskModal />}
+        />
+        <Route
+          path="board/:boardId/delete-task/:columnIndex/:taskIndex"
+          element={<DeleteTaskModal />}
+        />
+
         <Route path="/board/:boardId" element={<BoardView />}>
-        <Route path="task/:taskId" element={<TaskView />} />
-        
+          <Route path="task/:columnIndex/:taskIndex" element={<TaskView />} />
         </Route>
         <Route path="/admin" element={<Admin />} />
       </Route>
 
-      
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<Navigate to="/404" replace />} />
     </Routes>

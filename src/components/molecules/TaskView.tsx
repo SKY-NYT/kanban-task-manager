@@ -5,31 +5,28 @@ import Modal from "../atoms/Modal";
 import Dropdown from "../atoms/Dropdown";
 import { SubtaskCheckbox } from "../atoms/SubtaskCheckbox";
 import IconVerticalEllipsis from "../../assets/images/icon-vertical-ellipsis.svg?react";
-import type { Subtask, Task, Column } from "../../types/types";
+import type { Subtask, Column } from "../../types/types";
 
 export default function TaskView() {
-  const { boardId, taskId } = useParams();
+  const { boardId, columnIndex, taskIndex } = useParams();
   const navigate = useNavigate();
-  const { data } = useKanbanStore();
+  const { data, moveTask } = useKanbanStore();
   const boards = data.boards ?? [];
 
   const bIndex = boardId ? Number(boardId) : 0;
-  const tIndex = taskId ? Number(taskId) : 0;
   const board = boards[bIndex];
 
+  const cIndex = columnIndex ? Number(columnIndex) : 0;
+  const tIndex = taskIndex ? Number(taskIndex) : 0;
 
-  const flatTasks: { task: Task; columnName: string }[] = [];
-  board?.columns?.forEach((col: Column) => {
-    col.tasks?.forEach((task: Task) => {
-      flatTasks.push({ task, columnName: col.name });
-    });
-  });
+  const col = board?.columns?.[cIndex];
+  const task = col?.tasks?.[tIndex];
+  if (!board || !col || !task) return null;
 
-  const entry = flatTasks[tIndex];
-  if (!entry) return null;
-
-  const { task, columnName } = entry;
-  const completedCount = task.subtasks.filter((s: Subtask) => s.isCompleted).length;
+  const columnName = col.name;
+  const completedCount = task.subtasks.filter(
+    (s: Subtask) => s.isCompleted,
+  ).length;
 
   // Prepare options for the status dropdown
   const statusOptions = board.columns.map((col: Column) => ({
@@ -38,19 +35,21 @@ export default function TaskView() {
   }));
 
   const handleEdit = () => {
-    
-    navigate(`/board/${boardId}/edit-task/${taskId}`);
+    navigate(`/board/${boardId}/edit-task/${cIndex}/${tIndex}`);
   };
 
   return (
     <Modal>
       <div className="flex flex-col gap-6">
-       
         <div className="flex items-center justify-between gap-4">
           <Text variant="p1" className="text-foreground">
             {task.title}
           </Text>
-          <button onClick={handleEdit} aria-label="Task options" className="p-2 transition-transform hover:scale-110">
+          <button
+            onClick={handleEdit}
+            aria-label="Task options"
+            className="p-2 transition-transform hover:scale-110"
+          >
             <IconVerticalEllipsis className="fill-[#828FA3]" />
           </button>
         </div>
@@ -89,7 +88,24 @@ export default function TaskView() {
             options={statusOptions}
             value={columnName}
             onChange={(val) => {
-              console.log("Move task to:", val);
+              const toColumnIndex = board.columns.findIndex(
+                (c: Column) => c.name === val,
+              );
+              if (toColumnIndex < 0 || toColumnIndex === cIndex) return;
+
+              const toTaskIndex =
+                board.columns[toColumnIndex]?.tasks?.length ?? 0;
+
+              moveTask({
+                boardIndex: bIndex,
+                fromColumnIndex: cIndex,
+                taskIndex: tIndex,
+                toColumnIndex,
+                toTaskIndex,
+              });
+              navigate(
+                `/board/${boardId}/task/${toColumnIndex}/${toTaskIndex}`,
+              );
             }}
           />
         </div>
