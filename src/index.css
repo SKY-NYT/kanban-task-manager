@@ -145,6 +145,10 @@
   box-shadow: 0 0 0 3px rgba(99, 95, 199, 0.5);
 }
 
+@utility z-100 {
+  z-index: 100;
+}
+
 @utility btn {
   display: inline-flex;
   align-items: center;

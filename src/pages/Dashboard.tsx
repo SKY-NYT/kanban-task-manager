@@ -10,7 +10,7 @@ export default function Dashboard() {
   if (boards.length === 0) {
     return (
       <main
-        className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "pl-75" : "pl-0"}`}
+        className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "md:pl-65 lg:pl-75" : "pl-0"}`}
       >
         <div className="text-center">
           <Text variant="p2" className="text-gray-400 mb-6">
@@ -28,8 +28,8 @@ export default function Dashboard() {
     <main
       className={`
         w-full fixed z-30 h-full overflow-y-auto
-        transition-all duration-300 pt-24 px-8
-        ${sidebarVisible ? "ml-75" : "ml-0"}
+        transition-all duration-300 pt-16 md:pt-20 lg:pt-24 px-8
+        ${sidebarVisible ? "md:ml-65 lg:ml-75" : "ml-0"}
       `}
     >
       <header className="mb-10">

@@ -142,7 +142,7 @@ export default function BoardView() {
   if (boards.length === 0) {
     return (
       <main
-        className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "pl-75" : "pl-0"}`}
+        className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "md:pl-65 lg:pl-75" : "pl-0"}`}
       >
         <div className="text-center">
           <Text variant="p2" className="text-gray-400 mb-6">
@@ -160,8 +160,8 @@ export default function BoardView() {
     <main
       className={`
          w-full fixed z-30 h-full
-        transition-all duration-300 pt-20 
-        ${sidebarVisible ? "ml-75" : "ml-0"}
+        transition-all duration-300 pt-16 md:pt-20 lg:pt-24
+        ${sidebarVisible ? "md:ml-65 lg:ml-75" : "ml-0"}
       `}
     >
       <DndContext
@@ -169,7 +169,7 @@ export default function BoardView() {
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <div className="h-full py-4  flex gap-6 overflow-x-auto overflow-y-hidden ">
+        <div className="h-full pt-6 pb-4 px-6 flex gap-6 overflow-x-auto overflow-y-hidden">
           {board.columns?.map((col, columnIndex) => {
             const items = (col.tasks ?? []).map((_, taskIndex) =>
               taskDndId(columnIndex, taskIndex),

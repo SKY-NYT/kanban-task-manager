@@ -15,20 +15,21 @@ export default function Sidebar() {
   return (
     <>
       <div
-        className={`
-        fixed top-0 left-0 z-50 h-24 w-75 flex items-center px-8 
-        bg-background-secondary  transition-all duration-300
-        border-r border-border 
-      `}
+        className={`hidden md:flex fixed top-0 left-0 z-50 h-20 lg:h-24 items-center bg-background-secondary transition-all duration-300 ${
+          sidebarVisible
+            ? "w-65 lg:w-75 px-6 lg:px-8 border-r border-border"
+            : "w-0 px-0 overflow-hidden border-r-0"
+        }`}
       >
         <Logo />
       </div>
 
       <aside
         className={`
-          fixed top-24 left-0 z-40 h-[calc(100vh-6rem)] bg-background-secondary dark:bg-dark-bg-secondary 
-          border-r border-border dark:border-dark-border transition-all duration-300 flex flex-col overflow-hidden
-          ${sidebarVisible ? "w-75 translate-x-0" : "w-0 -translate-x-full"}
+          hidden md:flex
+          fixed top-20 lg:top-24 left-0 z-40 h-[calc(100vh-5rem)] lg:h-[calc(100vh-6rem)] bg-background-secondary dark:bg-dark-bg-secondary 
+          border-r border-border dark:border-dark-border transition-all duration-300 flex-col overflow-hidden
+          ${sidebarVisible ? "w-65 lg:w-75 translate-x-0" : "w-0 -translate-x-full"}
         `}
       >
         <nav className="flex-1 pr-6 py-4">
@@ -113,7 +114,7 @@ export default function Sidebar() {
         <button
           type="button"
           onClick={toggleSidebar}
-          className="fixed bottom-8 left-0 flex items-center justify-center w-14 h-12 rounded-r-full bg-primary hover:bg-primary-hover cursor-pointer transition-colors z-50"
+          className="hidden md:flex fixed bottom-8 left-0 items-center justify-center w-14 h-12 rounded-r-full bg-primary hover:bg-primary-hover cursor-pointer transition-colors z-50"
           aria-label="Show sidebar"
         >
           <IconShowSidebar className="fill-current" />

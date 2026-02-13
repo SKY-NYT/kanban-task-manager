@@ -3,9 +3,16 @@ import { useNavigate } from "react-router-dom";
 interface ModalProps {
   children: React.ReactNode;
   onClose?: () => void;
+  overlayClassName?: string;
+  panelClassName?: string;
 }
 
-export default function Modal({ children, onClose }: ModalProps) {
+export default function Modal({
+  children,
+  onClose,
+  overlayClassName = "",
+  panelClassName,
+}: ModalProps) {
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -15,11 +22,14 @@ export default function Modal({ children, onClose }: ModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-100 flex items-center justify-center bg-black/50 p-4"
+      className={`fixed inset-0 z-100 flex items-center justify-center bg-black/50 p-4 ${overlayClassName}`}
       onClick={handleClose}
     >
       <div
-        className="w-full max-w-120 bg-background-secondary rounded-lg p-8 shadow-2xl animate-in fade-in zoom-in duration-200"
+        className={
+          panelClassName ??
+          "w-full max-w-120 bg-background-secondary rounded-lg p-8 shadow-2xl animate-in fade-in zoom-in duration-200"
+        }
         onClick={(e) => e.stopPropagation()}
       >
         {children}
