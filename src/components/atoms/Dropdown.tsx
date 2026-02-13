@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Text } from "./Text";
+import Iconchevrondown from "../../assets/images/icon-chevron-down.svg?react";
+import Iconchevronup from "../../assets/images/icon-chevron-up.svg?react";
 
 interface Option { label: string; value: string; }
 
@@ -37,9 +39,12 @@ export default function Dropdown({ options, value, onChange, label, placeholder 
         <Text variant="p5" className={!selectedOption ? "text-gray-400" : "text-foreground"}>
           {selectedOption ? selectedOption.label : placeholder}
         </Text>
-        <svg className={`transition-transform ${isOpen ? "rotate-180" : ""}`} width="11" height="7">
-          <path stroke="#635FC7" strokeWidth="2" fill="none" d="m1 1 4 4 4-4"/>
-        </svg>
+
+        {isOpen ? (
+          <Iconchevronup className="transition-transform" />
+        ) : (
+          <Iconchevrondown className="transition-transform" />
+        )}
       </button>
 
       {isOpen && (

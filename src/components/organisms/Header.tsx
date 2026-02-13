@@ -2,8 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { Text } from "../atoms/Text";
 import Button from "../atoms/Buttons";
-import IconVerticalEllipsis from "../../assets/images/icon-vertical-ellipsis.svg?react";
 import { useKanbanStore } from "../../store/useKanbanStore";
+import Menu from "../atoms/Menu";
 
 export default function Header() {
   const { boardId } = useParams();
@@ -22,6 +22,16 @@ export default function Header() {
   const handleLogout = () => {
     logout();
     navigate("/login", { replace: true });
+  };
+
+  const handleEditBoard = () => {
+    if (!boardId) return;
+    navigate(`/board/${boardId}/edit-board`);
+  };
+
+  const handleDeleteBoard = () => {
+    if (!boardId) return;
+    navigate(`/board/${boardId}/delete-board`);
   };
 
   return (
@@ -63,26 +73,20 @@ export default function Header() {
         </button>
 
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="hidden sm:block px-4 py-2"
-          >
-            <Text
-              variant="p6"
-              className="text-preset-gray-300 hover:text-danger cursor-pointer"
-            >
-              Logout
-            </Text>
-          </button>
-
-          <button
-            aria-label="Options"
-            type="button"
-            className="p-2 group cursor-pointer"
-          >
-            <IconVerticalEllipsis className="fill-preset-gray-300 group-hover:scale-110 transition-transform" />
-          </button>
+          {!isDashboard && (
+            <Menu
+              ariaLabel="Options"
+              editLabel="Edit Board"
+              deleteLabel="Delete Board"
+              logoutLabel="Logout"
+              iconClassName="fill-preset-gray-300"
+              buttonClassName="p-2 group cursor-pointer"
+              onEdit={handleEditBoard}
+              onDelete={handleDeleteBoard}
+              onLogout={handleLogout}
+              className="right-0 h-35"
+            />
+          )}
         </div>
       </div>
     </header>

@@ -1,4 +1,5 @@
 import { Text } from "./Text";
+import IconCheck from "../../assets/images/icon-check.svg?react";
 
 interface SubtaskCheckboxProps {
   label: string;
@@ -6,21 +7,28 @@ interface SubtaskCheckboxProps {
   onToggle: () => void;
 }
 
-export const SubtaskCheckbox = ({ label, isCompleted, onToggle }: SubtaskCheckboxProps) => {
+export const SubtaskCheckbox = ({
+  label,
+  isCompleted,
+  onToggle,
+}: SubtaskCheckboxProps) => {
   return (
-    <label
-      onClick={onToggle}
-      className="flex items-center gap-4 w-87.5 h-10 px-3 cursor-pointer rounded-sm bg-background-secondary hover:bg-[#635FC7]/25 transition-all"
-    >
-      <input
-        type="checkbox"
-        checked={isCompleted}
-        readOnly
-        className="w-4 h-4 rounded-sm border border-[#828fa340]  appearance-none cursor-pointer relative checked:bg-primary checked:border-none
-          checked:after:content-[''] checked:after:absolute checked:after:left-1.5 checked:after:top-0.5 checked:after:w-1 checked:after:h-2 
-          checked:after:border-white checked:after:border-r-2 checked:after:border-b-2 checked:after:rotate-45"
-      />
-      <Text variant="p6" className={`${isCompleted ? "line-through opacity-50" : ""} text-foreground transition-all`}>
+    <label className="flex items-center gap-4 w-full h-10 px-3 cursor-pointer rounded-sm bg-background hover:bg-[#635FC7]/25 transition-all">
+      <span className="relative inline-flex h-4 w-4 items-center justify-center">
+        <input
+          type="checkbox"
+          checked={isCompleted}
+          onChange={onToggle}
+          className="h-4 w-4 rounded-sm border  border-[#828fa340] appearance-none cursor-pointer checked:bg-primary checked:border-none"
+        />
+        {isCompleted && (
+          <IconCheck className="pointer-events-none absolute inset-0 m-auto h-2 w-2 fill-white" />
+        )}
+      </span>
+      <Text
+        variant="p6"
+        className={`${isCompleted ? "line-through opacity-50" : ""} text-foreground transition-all`}
+      >
         {label}
       </Text>
     </label>

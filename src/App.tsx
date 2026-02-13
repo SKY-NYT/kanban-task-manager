@@ -29,8 +29,11 @@ export default function App() {
         <Route index element={<Dashboard />} />
         <Route path="add-board" element={<AddBoardModal />} />
         <Route path="add-task" element={<AddTaskModal />} />
-        <Route path="delete-board" element={<DeleteBoardModal />} />
-        <Route path="edit-board" element={<EditBoardModal />} />
+        <Route
+          path="board/:boardId/delete-board"
+          element={<DeleteBoardModal />}
+        />
+        <Route path="board/:boardId/edit-board" element={<EditBoardModal />} />
         <Route
           path="board/:boardId/edit-task/:columnIndex/:taskIndex"
           element={<EditTaskModal />}
