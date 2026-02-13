@@ -28,7 +28,7 @@ export default function Dashboard() {
     <main
       className={`
         w-full fixed z-30 h-full overflow-y-auto
-        transition-all duration-300 pt-16 md:pt-20 lg:pt-24 px-8
+        transition-all duration-300 pt-16 md:pt-20.25 lg:pt-24 px-8
         ${sidebarVisible ? "md:ml-65 lg:ml-75" : "ml-0"}
       `}
     >

@@ -28,7 +28,7 @@ export default function Modal({
       <div
         className={
           panelClassName ??
-          "w-full max-w-120 bg-background-secondary rounded-lg p-8 shadow-2xl animate-in fade-in zoom-in duration-200"
+          "w-full max-w-85.75 md:max-w-120 bg-background-secondary rounded-[6px] p-6 md:p-8 shadow-2xl animate-in fade-in zoom-in duration-200 max-h-[calc(100vh-2rem)] overflow-y-auto custom-scrollbar"
         }
         onClick={(e) => e.stopPropagation()}
       >

@@ -47,7 +47,7 @@ export default function TaskView() {
     <Modal>
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between gap-4">
-          <Text variant="p1" className="text-foreground">
+          <Text variant="p2" className="text-foreground">
             {task.title}
           </Text>
 
@@ -55,13 +55,13 @@ export default function TaskView() {
         </div>
 
         {task.description && (
-          <Text variant="p6" className="text-gray-400 leading-6">
+          <Text variant="p5" className="text-gray-400">
             {task.description}
           </Text>
         )}
 
         <div className="flex flex-col gap-4">
-          <Text variant="p4" className="text-gray-400 font-bold">
+          <Text variant="p6" className="text-gray-400">
             Subtasks ({completedCount} of {task.subtasks.length})
           </Text>
           <div className="flex flex-col gap-2">

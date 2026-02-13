@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useKanbanStore } from "../../store/useKanbanStore";
 import Modal from "../atoms/Modal";
@@ -12,7 +12,15 @@ import type { Task, Subtask, Column } from "../../types/types";
 export default function EditTaskModal() {
   const { boardId, columnIndex, taskIndex } = useParams();
   const navigate = useNavigate();
-  const { data, updateTask, moveTask, subtaskErrors, getCrossIconClass } = useKanbanStore();
+  const {
+    data,
+    updateTask,
+    moveTask,
+    subtaskErrors,
+    setSubtaskErrors,
+    resetSubtaskErrors,
+    getCrossIconClass,
+  } = useKanbanStore();
 
   const boardIndex = boardId ? Number(boardId) : 0;
   const colIndex = columnIndex ? Number(columnIndex) : 0;
@@ -33,6 +41,19 @@ export default function EditTaskModal() {
   );
   const [status, setStatus] = useState(initialStatus);
 
+  useEffect(() => {
+    resetSubtaskErrors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const syncErrorsLength = (nextLen: number) => {
+    const next = Array.from(
+      { length: nextLen },
+      (_, i) => subtaskErrors[i] ?? "",
+    );
+    setSubtaskErrors(next);
+  };
+
   // Column options
   const statusOptions =
     currentBoard?.columns?.map((col: Column) => ({
@@ -40,21 +61,38 @@ export default function EditTaskModal() {
       value: col.name,
     })) || [];
 
-  const handleAddSubtask = () => setSubtasks([...subtasks, ""]);
-  const handleRemoveSubtask = (index: number) =>
-    setSubtasks(subtasks.filter((_, i) => i !== index));
+  const handleAddSubtask = () => {
+    const nextSubtasks = [...subtasks, ""];
+    setSubtasks(nextSubtasks);
+    syncErrorsLength(nextSubtasks.length);
+  };
+
+  const handleRemoveSubtask = (index: number) => {
+    const nextSubtasks = subtasks.filter((_, i) => i !== index);
+    setSubtasks(nextSubtasks);
+
+    const nextErrors = subtaskErrors.filter((_, i) => i !== index);
+    setSubtaskErrors(nextErrors);
+  };
+
   const handleSubtaskChange = (index: number, value: string) => {
     const updated = [...subtasks];
     updated[index] = value;
     setSubtasks(updated);
+
+    if (subtaskErrors[index]) {
+      const nextErrors = [...subtaskErrors];
+      nextErrors[index] = value.trim().length === 0 ? "Can't be empty" : "";
+      setSubtaskErrors(nextErrors);
+    }
   };
 
   if (!existingTask) return null;
 
   return (
     <Modal>
-      <div className="flex flex-col gap-6 max-h-[85vh] overflow-y-auto pr-2 custom-scrollbar">
-        <Text variant="p1" className="text-foreground">
+      <div className="flex flex-col gap-6">
+        <Text variant="p2" className="text-foreground">
           Edit Task
         </Text>
 
@@ -65,16 +103,21 @@ export default function EditTaskModal() {
 
             if (!currentBoard) return;
 
-            const cleanedSubtasks = subtasks
-              .map((s) => s.trim())
-              .filter((s) => s.length > 0);
-            const nextSubtasks: Subtask[] = cleanedSubtasks.map((title, i) => ({
-              title,
+            const nextErrors = subtasks.map((s) =>
+              s.trim().length === 0 ? "Can't be empty" : "",
+            );
+            setSubtaskErrors(nextErrors);
+
+            const hasErrors = nextErrors.some(Boolean);
+            if (hasErrors) return;
+
+            const nextSubtasks: Subtask[] = subtasks.map((title, i) => ({
+              title: title.trim(),
               isCompleted: existingTask.subtasks[i]?.isCompleted ?? false,
             }));
 
             updateTask(boardIndex, colIndex, tIndex, {
-              title,
+              title: title.trim(),
               description,
               subtasks: nextSubtasks,
             });
@@ -133,11 +176,13 @@ export default function EditTaskModal() {
                   value={sub}
                   onChange={(e) => handleSubtaskChange(index, e.target.value)}
                   fullWidth
+                  error={subtaskErrors[index]}
                 />
                 <button
                   aria-label="Remove subtask"
                   type="button"
                   onClick={() => handleRemoveSubtask(index)}
+                  className="group transition-colors"
                 >
                   <IconCross
                     className={getCrossIconClass(Boolean(subtaskErrors[index]))}

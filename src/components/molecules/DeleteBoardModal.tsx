@@ -7,17 +7,13 @@ import Button from "../atoms/Buttons";
 export default function DeleteBoardModal() {
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const { data, setData } = useKanbanStore();
+  const { data, deleteBoard } = useKanbanStore();
 
   const bIndex = boardId ? Number(boardId) : 0;
   const boardName = data.boards?.[bIndex]?.name || "";
 
   const handleDelete = () => {
-    // Logic to delete the board from state
-    const updatedBoards = data.boards.filter((_, index) => index !== bIndex);
-    setData({ ...data, boards: updatedBoards });
-    
-    // Redirect to home or another board after deletion
+    deleteBoard(bIndex);
     navigate("/");
   };
 
@@ -29,7 +25,7 @@ export default function DeleteBoardModal() {
     <Modal onClose={handleCancel}>
       <div className="flex flex-col gap-6">
         {/* Heading in Red */}
-        <Text variant="p1" className="text-danger">
+        <Text variant="p2" className="text-danger">
           Delete this board?
         </Text>
 
@@ -41,16 +37,12 @@ export default function DeleteBoardModal() {
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4">
-          <Button 
-            variant="destructive" 
-            fullWidth 
-            onClick={handleDelete}
-          >
+          <Button variant="destructive" fullWidth onClick={handleDelete}>
             Delete
           </Button>
-          <Button 
-            variant="secondary" 
-            fullWidth 
+          <Button
+            variant="secondary"
+            fullWidth
             onClick={handleCancel}
             className="hover:bg-interactive-dynamic hover:text-primary"
           >

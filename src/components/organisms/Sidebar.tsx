@@ -15,7 +15,7 @@ export default function Sidebar() {
   return (
     <>
       <div
-        className={`hidden md:flex fixed top-0 left-0 z-50 h-20 lg:h-24 items-center bg-background-secondary transition-all duration-300 ${
+        className={`hidden md:flex fixed top-0 left-0 z-50 h-20.25 lg:h-24 items-center bg-background-secondary transition-all duration-300 ${
           sidebarVisible
             ? "w-65 lg:w-75 px-6 lg:px-8 border-r border-border"
             : "w-0 px-0 overflow-hidden border-r-0"
@@ -27,7 +27,7 @@ export default function Sidebar() {
       <aside
         className={`
           hidden md:flex
-          fixed top-20 lg:top-24 left-0 z-40 h-[calc(100vh-5rem)] lg:h-[calc(100vh-6rem)] bg-background-secondary dark:bg-dark-bg-secondary 
+          fixed top-20.25 lg:top-24 left-0 z-40 h-[calc(100vh-81px)] lg:h-[calc(100vh-6rem)] bg-background-secondary dark:bg-dark-bg-secondary 
           border-r border-border dark:border-dark-border transition-all duration-300 flex-col overflow-hidden
           ${sidebarVisible ? "w-65 lg:w-75 translate-x-0" : "w-0 -translate-x-full"}
         `}

@@ -31,7 +31,7 @@ export default function DeleteTaskModal() {
   return (
     <Modal onClose={handleCancel}>
       <div className="flex flex-col gap-6">
-        <Text variant="p1" className="text-danger">
+        <Text variant="p2" className="text-danger">
           Delete this task?
         </Text>
 

@@ -52,7 +52,7 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 h-16 md:h-20 lg:h-24 bg-background-secondary border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-40 h-16 md:h-20.25 lg:h-24 bg-background-secondary border-b border-border">
       <div className="flex h-full items-center">
         {!sidebarVisible && (
           <div className="hidden md:flex h-full w-50.25 lg:w-52.25 items-center border-r border-border px-6">
@@ -74,7 +74,7 @@ export default function Header() {
               <Text
                 variant="p2"
                 as="h2"
-                className="text-preset-black transition-colors duration-300"
+                className="text-preset-black transition-colors duration-300 md:text-[20px] md:leading-[normal] lg:text-h-xl"
               >
                 {displayTitle}
               </Text>
@@ -104,7 +104,7 @@ export default function Header() {
                 <Text
                   variant="p2"
                   as="h2"
-                  className="hidden md:block text-preset-black transition-colors duration-300"
+                  className="hidden md:block text-preset-black transition-colors duration-300 md:text-[20px] md:leading-[normal] lg:text-h-xl"
                 >
                   {displayTitle}
                 </Text>
@@ -159,7 +159,6 @@ export default function Header() {
         <MobileBoardsModal
           isOpen={isMobileBoardsOpen}
           onClose={() => setIsMobileBoardsOpen(false)}
-          
         />
       )}
     </header>

@@ -9,51 +9,86 @@ import { useKanbanStore } from "../../store/useKanbanStore";
 
 export default function AddBoardModal() {
   const navigate = useNavigate();
-    const {  subtaskErrors,  getCrossIconClass } =
-      useKanbanStore(); 
+  const { data, addBoard, addColumn, getCrossIconClass } = useKanbanStore();
   const [name, setName] = useState("");
+  const [nameError, setNameError] = useState("");
   const [columns, setColumns] = useState(["Todo", "Doing"]);
+  const [columnErrors, setColumnErrors] = useState<string[]>(["", ""]);
 
-  const handleClose = () => navigate("/");
+  const handleClose = () => navigate(-1);
 
-  const addColumn = () => setColumns([...columns, ""]);
+  const handleAddColumn = () => {
+    const next = [...columns, ""];
+    setColumns(next);
+    setColumnErrors((prev) => [...prev, ""]);
+  };
 
   const updateColumn = (index: number, value: string) => {
     const newCols = [...columns];
     newCols[index] = value;
     setColumns(newCols);
+
+    if (columnErrors[index]) {
+      const nextErrors = [...columnErrors];
+      nextErrors[index] = value.trim().length === 0 ? "Can't be empty" : "";
+      setColumnErrors(nextErrors);
+    }
   };
 
   const removeColumn = (index: number) => {
     setColumns(columns.filter((_, i) => i !== index));
+    setColumnErrors(columnErrors.filter((_, i) => i !== index));
   };
 
   return (
     /* BACKDROP */
     <Modal onClose={handleClose}>
-    
-      <div
-        className="w-full max-w-120 rounded-lg bg-background-secondary   max-h-[90vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <Text variant="p2" as="h2" className="text-foreground mb-6">
+      <div className="flex flex-col gap-6">
+        <Text variant="p2" className="text-foreground">
           Add New Board
         </Text>
 
-        <form className="flex flex-col gap-6">
-          
+        <form
+          className="flex flex-col gap-6"
+          onSubmit={(e) => {
+            e.preventDefault();
+
+            const nextName = name.trim();
+            setNameError(nextName.length === 0 ? "Can't be empty" : "");
+
+            const nextColumnErrors = columns.map((c) =>
+              c.trim().length === 0 ? "Can't be empty" : "",
+            );
+            setColumnErrors(nextColumnErrors);
+
+            const hasErrors =
+              nextName.length === 0 || nextColumnErrors.some(Boolean);
+            if (hasErrors) return;
+
+            const newBoardIndex = data.boards.length;
+            addBoard(nextName);
+
+            columns.forEach((c) => {
+              const colName = c.trim();
+              if (colName.length === 0) return;
+              addColumn(newBoardIndex, colName);
+            });
+
+            navigate(`/boards/${newBoardIndex}`);
+          }}
+        >
           <TextField
             label="Board Name"
             placeholder="e.g. Web Design"
             value={name}
             onChange={(e) => setName(e.target.value)}
             fullWidth
+            error={nameError}
           />
 
-          
           <div className="flex flex-col gap-3">
             <Text variant="p6" className="text-gray-400">
-               Columns
+              Columns
             </Text>
 
             {columns.map((col, index) => (
@@ -63,14 +98,17 @@ export default function AddBoardModal() {
                   value={col}
                   onChange={(e) => updateColumn(index, e.target.value)}
                   fullWidth
+                  error={columnErrors[index]}
                 />
-               <button
-                  aria-label="Remove subtask"
+                <button
+                  aria-label="Remove column"
                   type="button"
                   onClick={() => removeColumn(index)}
                   className="group transition-colors"
                 >
-                  <IconCross className={getCrossIconClass(Boolean(subtaskErrors[index]))} />
+                  <IconCross
+                    className={getCrossIconClass(Boolean(columnErrors[index]))}
+                  />
                 </button>
               </div>
             ))}
@@ -79,13 +117,12 @@ export default function AddBoardModal() {
               type="button"
               variant="secondary"
               fullWidth
-              onClick={addColumn}
+              onClick={handleAddColumn}
             >
               + Add New Column
             </Button>
           </div>
 
-          
           <Button type="submit" variant="primary" fullWidth>
             Create New Board
           </Button>

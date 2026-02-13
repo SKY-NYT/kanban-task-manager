@@ -78,8 +78,8 @@ export default function AddTaskModal() {
 
   return (
     <Modal>
-      <div className="flex flex-col gap-6 max-h-[85vh] overflow-y-auto pr-2  custom-scrollbar">
-        <Text variant="p1" className="text-foreground">
+      <div className="flex flex-col gap-6">
+        <Text variant="p2" className="text-foreground">
           Add New Task
         </Text>
 

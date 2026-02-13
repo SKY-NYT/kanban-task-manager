@@ -160,7 +160,7 @@ export default function BoardView() {
     <main
       className={`
          w-full fixed z-30 h-full
-        transition-all duration-300 pt-16 md:pt-20 lg:pt-24
+        transition-all duration-300 pt-16 md:pt-20.25 lg:pt-24
         ${sidebarVisible ? "md:ml-65 lg:ml-75" : "ml-0"}
       `}
     >

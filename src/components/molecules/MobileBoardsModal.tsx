@@ -27,7 +27,8 @@ export default function MobileBoardsModal({
   return (
     <Modal
       onClose={onClose}
-      panelClassName="w-full max-w-[264px] bg-background-secondary rounded-lg p-4 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)]"
+      overlayClassName="top-16 items-start"
+      panelClassName="mx-auto w-full max-w-[264px] bg-background-secondary rounded-lg p-4 mt-0 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)]"
     >
       <div className="flex flex-col gap-4">
         <Text variant="p4" className="text-gray-400 px-2">
