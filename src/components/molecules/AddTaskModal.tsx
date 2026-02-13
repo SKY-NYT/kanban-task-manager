@@ -188,7 +188,7 @@ export default function AddTaskModal() {
             value={status}
             options={statusOptions}
             onChange={(val) => setStatus(val)}
-            className="w-full"
+            className="w-full "
           />
 
           <Button type="submit" variant="primary" fullWidth>
