@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { Text } from "../atoms/Text";
 import Button from "../atoms/Buttons";
@@ -14,6 +14,7 @@ import MobileBoardsModal from "../molecules/MobileBoardsModal";
 export default function Header() {
   const { boardId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { logout } = useAuth();
   const { data, sidebarVisible } = useKanbanStore();
   const [isMobileBoardsOpen, setIsMobileBoardsOpen] = useState(false);
@@ -33,22 +34,34 @@ export default function Header() {
 
   const handleEditBoard = () => {
     if (!boardId) return;
-    navigate(`/boards/${boardId}/edit`);
+    navigate(`/boards/${boardId}/edit`, {
+      state: { backgroundLocation: location },
+    });
   };
 
   const handleDeleteBoard = () => {
     if (!boardId) return;
-    navigate(`/boards/${boardId}/delete`);
+    navigate(`/boards/${boardId}/delete`, {
+      state: { backgroundLocation: location },
+    });
   };
 
   const handleAddTask = () => {
     if (boardId) {
-      navigate(`/boards/${boardId}/tasks/new`);
+      navigate(`/boards/${boardId}/tasks/new`, {
+        state: { backgroundLocation: location },
+      });
       return;
     }
 
-    if (boards.length > 0) navigate(`/boards/0/tasks/new`);
-    else navigate("/boards/new");
+    if (boards.length > 0)
+      navigate(`/boards/0/tasks/new`, {
+        state: { backgroundLocation: location },
+      });
+    else
+      navigate("/boards/new", {
+        state: { backgroundLocation: location },
+      });
   };
 
   return (

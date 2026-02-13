@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { Text } from "../atoms/Text";
 import { Logo } from "../molecules/Logo";
 import Iconboard from "../../assets/images/icon-board.svg?react";
@@ -9,6 +9,7 @@ import IconLightTheme from "../../assets/images/icon-light-theme.svg?react";
 import { useKanbanStore } from "../../store/useKanbanStore";
 
 export default function Sidebar() {
+  const location = useLocation();
   const { data, sidebarVisible, toggleSidebar } = useKanbanStore();
   const boards = data.boards ?? [];
   const { theme, toggleTheme } = useKanbanStore();
@@ -65,6 +66,7 @@ export default function Sidebar() {
               <NavLink
                 to="/boards/new"
                 type="button"
+                state={{ backgroundLocation: location }}
                 className="flex items-center gap-4 text-primary hover:opacity-70 transition-opacity"
               >
                 <Iconboard />

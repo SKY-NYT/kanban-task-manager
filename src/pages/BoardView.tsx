@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { Text } from "../components/atoms/Text";
 import { useKanbanStore } from "../store/useKanbanStore";
 import { Outlet } from "react-router-dom";
@@ -54,10 +54,12 @@ function DroppableColumn({
 function SortableTaskLink({
   id,
   to,
+  state,
   children,
 }: {
   id: string;
   to: string;
+  state?: unknown;
   children: React.ReactNode;
 }) {
   const {
@@ -78,6 +80,7 @@ function SortableTaskLink({
     <Link
       ref={setNodeRef}
       to={to}
+      state={state}
       style={style}
       {...attributes}
       {...listeners}
@@ -92,6 +95,7 @@ function SortableTaskLink({
 
 export default function BoardView() {
   const { boardId } = useParams();
+  const location = useLocation();
   const { data, sidebarVisible, moveTask } = useKanbanStore();
   const boards = data.boards ?? [];
   const index = boardId ? Number(boardId) : 0;
@@ -160,7 +164,7 @@ export default function BoardView() {
     <main
       className={`
          w-full fixed z-30 h-full
-        transition-all duration-300 pt-16 md:pt-20.25 lg:pt-24
+        transition-all duration-300 pt-16 md:pt-[81px] lg:pt-24
         ${sidebarVisible ? "md:ml-65 lg:ml-75" : "ml-0"}
       `}
     >
@@ -208,6 +212,7 @@ export default function BoardView() {
                             key={id}
                             id={id}
                             to={`/boards/${index}/tasks/${columnIndex}/${taskIndex}`}
+                            state={{ backgroundLocation: location }}
                           >
                             <Text
                               variant="p3"
@@ -234,6 +239,7 @@ export default function BoardView() {
 
           <Link
             to={`/boards/${index}/edit`}
+            state={{ backgroundLocation: location }}
             type="button"
             className="cursor-pointer
     mt-12 shrink-0 w-70 h-203.5 rounded-md 

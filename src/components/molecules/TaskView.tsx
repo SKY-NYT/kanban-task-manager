@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useKanbanStore } from "../../store/useKanbanStore";
 import { Text } from "../atoms/Text";
 import Modal from "../atoms/Modal";
@@ -10,6 +10,7 @@ import type { Subtask, Column } from "../../types/types";
 export default function TaskView() {
   const { boardId, columnIndex, taskIndex } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { data, moveTask, updateTask } = useKanbanStore();
 
@@ -36,11 +37,21 @@ export default function TaskView() {
   }));
 
   const handleEdit = () => {
-    navigate(`/boards/${boardId}/tasks/${cIndex}/${tIndex}/edit`);
+    const backgroundLocation =
+      (location.state as { backgroundLocation?: unknown } | null)
+        ?.backgroundLocation ?? location;
+    navigate(`/boards/${boardId}/tasks/${cIndex}/${tIndex}/edit`, {
+      state: { backgroundLocation },
+    });
   };
 
   const handleDelete = () => {
-    navigate(`/boards/${boardId}/tasks/${cIndex}/${tIndex}/delete`);
+    const backgroundLocation =
+      (location.state as { backgroundLocation?: unknown } | null)
+        ?.backgroundLocation ?? location;
+    navigate(`/boards/${boardId}/tasks/${cIndex}/${tIndex}/delete`, {
+      state: { backgroundLocation },
+    });
   };
 
   return (
@@ -90,6 +101,10 @@ export default function TaskView() {
             options={statusOptions}
             value={columnName}
             onChange={(val) => {
+              const backgroundLocation =
+                (location.state as { backgroundLocation?: unknown } | null)
+                  ?.backgroundLocation ?? location;
+
               const toColumnIndex = board.columns.findIndex(
                 (c: Column) => c.name === val,
               );
@@ -108,6 +123,7 @@ export default function TaskView() {
 
               navigate(
                 `/boards/${boardId}/tasks/${toColumnIndex}/${toTaskIndex}`,
+                { state: { backgroundLocation } },
               );
             }}
           />
