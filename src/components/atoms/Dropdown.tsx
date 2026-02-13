@@ -33,6 +33,44 @@ export default function Dropdown({
   const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({});
   const selectedOption = options.find((opt) => opt.value === value);
 
+  const computeMenuStyle = (rect: DOMRect, menuHeight: number) => {
+    const viewportPadding = 8;
+    const maxMenuHeight = 120;
+
+    const clamp = (val: number, min: number, max: number) =>
+      Math.min(Math.max(val, min), max);
+
+    const spaceBelow = window.innerHeight - rect.bottom - viewportPadding;
+    const spaceAbove = rect.top - viewportPadding;
+
+    const shouldFlipUp = spaceBelow < menuHeight && spaceAbove > spaceBelow;
+    const computedMaxHeight = clamp(
+      shouldFlipUp ? spaceAbove : spaceBelow,
+      0,
+      maxMenuHeight,
+    );
+
+    const top = shouldFlipUp
+      ? clamp(rect.top - menuHeight, viewportPadding, window.innerHeight)
+      : clamp(rect.bottom, viewportPadding, window.innerHeight);
+
+    const width = rect.width;
+    const left = clamp(
+      rect.left,
+      viewportPadding,
+      window.innerWidth - width - viewportPadding,
+    );
+
+    return {
+      position: "fixed" as const,
+      left,
+      top,
+      width,
+      maxHeight: computedMaxHeight,
+      zIndex: 110,
+    } satisfies React.CSSProperties;
+  };
+
   useEffect(() => {
     const clickOut = (e: MouseEvent) => {
       const target = e.target as Node;
@@ -130,7 +168,15 @@ export default function Dropdown({
       <button
         ref={buttonRef}
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          const nextOpen = !isOpen;
+          if (nextOpen && buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            // Provide an initial position immediately to avoid a visible "snap".
+            setMenuStyle(computeMenuStyle(rect, 120));
+          }
+          setIsOpen(nextOpen);
+        }}
         className={`flex h-10 w-full items-center justify-between rounded-sm border px-4 transition-all
           ${isOpen ? "border-primary bg-background-secondary" : "border-[#828fa340] bg-transparent"} hover:border-primary`}
       >
@@ -153,7 +199,7 @@ export default function Dropdown({
           <ul
             ref={menuRef}
             style={menuStyle}
-            className="max-h-30  right-0 overflow-y-auto rounded-lg bg-todo-background p-4 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)] flex flex-col gap-2"
+            className="max-h-30 overflow-y-auto rounded-lg bg-todo-background p-4 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)] flex flex-col gap-2"
           >
             {options.map((opt) => (
               <li
