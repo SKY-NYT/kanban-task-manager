@@ -64,11 +64,11 @@ export default function AddBoardModal() {
                   onChange={(e) => updateColumn(index, e.target.value)}
                   fullWidth
                 />
-                <button
-                  aria-label="Remove column"
+               <button
+                  aria-label="Remove subtask"
                   type="button"
                   onClick={() => removeColumn(index)}
-                  className="group p-2"
+                  className="group transition-colors"
                 >
                   <IconCross className={getCrossIconClass(Boolean(subtaskErrors[index]))} />
                 </button>
