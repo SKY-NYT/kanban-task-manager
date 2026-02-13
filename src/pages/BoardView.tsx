@@ -96,22 +96,6 @@ export default function BoardView() {
   const boards = data.boards ?? [];
   const index = boardId ? Number(boardId) : 0;
   const board = boards[index];
-  if (boards.length === 0) {
-    return (
-      <main
-        className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "pl-75" : "pl-0"}`}
-      >
-        <div className="text-center">
-          <Text variant="p2" className="text-gray-400 mb-6">
-            This account has no boards.
-          </Text>
-          <Button variant="primary" size="md">
-            + Create New Board
-          </Button>
-        </div>
-      </main>
-    );
-  }
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -119,6 +103,8 @@ export default function BoardView() {
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
+    if (!board) return;
+
     const { active, over } = event;
     if (!over) return;
 
@@ -152,6 +138,23 @@ export default function BoardView() {
       toTaskIndex,
     });
   };
+
+  if (boards.length === 0) {
+    return (
+      <main
+        className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "pl-75" : "pl-0"}`}
+      >
+        <div className="text-center">
+          <Text variant="p2" className="text-gray-400 mb-6">
+            This account has no boards.
+          </Text>
+          <Button variant="primary" size="md">
+            + Create New Board
+          </Button>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main
@@ -230,7 +233,7 @@ export default function BoardView() {
           })}
 
           <Link
-            to={`/edit-board`}
+            to={`/board/${index}/edit-board`}
             type="button"
             className="cursor-pointer
     mt-12 shrink-0 w-70 h-203.5 rounded-md 
