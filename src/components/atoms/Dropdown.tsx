@@ -34,7 +34,7 @@ export default function Dropdown({ options, value, onChange, label, placeholder 
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={`flex h-10 w-full items-center justify-between rounded-sm border px-4 transition-all
-          ${isOpen ? "border-primary bg-white" : "border-[#828fa340] bg-transparent"} hover:border-primary`}
+          ${isOpen ? "border-primary bg-background-secondary" : "border-[#828fa340] bg-transparent"} hover:border-primary`}
       >
         <Text variant="p5" className={!selectedOption ? "text-gray-400" : "text-foreground"}>
           {selectedOption ? selectedOption.label : placeholder}
@@ -48,7 +48,7 @@ export default function Dropdown({ options, value, onChange, label, placeholder 
       </button>
 
       {isOpen && (
-        <ul className="absolute top-full z-100 w-full max-h-30 overflow-y-auto rounded-lg bg-white p-4 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)] flex flex-col gap-2">
+        <ul className="absolute top-full z-100 w-full max-h-30 overflow-y-auto rounded-lg bg-todo-background  p-4 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)] flex flex-col gap-2">
           {options.map((opt) => (
             <li key={opt.value} onClick={() => { onChange(opt.value); setIsOpen(false); }} className="group cursor-pointer">
               <Text variant="p6" className="text-gray-400 group-hover:text-primary transition-colors">

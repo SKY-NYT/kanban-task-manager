@@ -22,7 +22,7 @@ export const SubtaskCheckbox = ({
           className="h-4 w-4 rounded-sm border  border-[#828fa340] appearance-none cursor-pointer checked:bg-primary checked:border-none"
         />
         {isCompleted && (
-          <IconCheck className="pointer-events-none absolute inset-0 m-auto h-2 w-2 fill-white" />
+          <IconCheck className="pointer-events-none absolute inset-0 m-auto h-2 w-2 " />
         )}
       </span>
       <Text

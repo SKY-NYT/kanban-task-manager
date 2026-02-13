@@ -82,7 +82,7 @@ export default function AddBoardModal() {
             </Button>
           </div>
 
-          {/* Submit */}
+          
           <Button type="submit" variant="primary" fullWidth>
             Create New Board
           </Button>

@@ -24,7 +24,7 @@ export default function Menu({
   logoutLabel = "Logout",
   ariaLabel = "Task options",
   iconClassName = "fill-[#828FA3]",
-  buttonClassName = "p-2 rounded-lg bg-white  transition-transform hover:scale-110",
+  buttonClassName = "p-2  transition-transform hover:scale-110 cursor-pointer",
   className = "",
 }: MenuProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,7 +56,7 @@ export default function Menu({
       {isOpen && (
         <div
           role="menu"
-          className={`flex flex-col gap-4 absolute -right-20 top-full z-50 mt-2 h-23.5 w-48 rounded-lg bg-background-secondary p-3 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)] ${className}`}
+          className={`flex flex-col gap-4 absolute -right-20 top-full z-50 mt-2 h-23.5 w-48  bg-menu-background p-3  ${className}`}
         >
           <button
             type="button"

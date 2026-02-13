@@ -31,6 +31,8 @@
   --color-foreground: var(--color-preset-black);
   --color-foreground-secondary: var(--color-preset-gray-300);
   --color-border: var(--color-preset-gray-200);
+  --color-menu-background: var(--color-preset-white);
+  --color-todo-background: var(--color-preset-gray-100);
 
   --color-interactive-dynamic: rgba(99, 95, 199, 0.2);
 
@@ -85,10 +87,11 @@
     --color-preset-black: var(--color-preset-white);
 
     --color-interactive-dynamic: var(--color-preset-white);
-    
+    --color-menu-background: var(--color-preset-gray-600);
     /* Mapping your gray utilities to dark equivalents */
     --color-gray-100: var(--color-preset-gray-500);
     --color-gray-200: var(--color-preset-gray-400);
+    --color-todo-background: var(--color-preset-gray-600);
   }
 }
 
