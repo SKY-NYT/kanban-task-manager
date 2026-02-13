@@ -27,26 +27,23 @@ export default function App() {
         }
       >
         <Route index element={<Dashboard />} />
-        <Route path="add-board" element={<AddBoardModal />} />
-        <Route path="add-task" element={<AddTaskModal />} />
+        <Route path="boards/new" element={<AddBoardModal />} />
+        <Route path="boards/:boardId/tasks/new" element={<AddTaskModal />} />
+        <Route path="boards/:boardId/delete" element={<DeleteBoardModal />} />
+        <Route path="boards/:boardId/edit" element={<EditBoardModal />} />
         <Route
-          path="board/:boardId/delete-board"
-          element={<DeleteBoardModal />}
-        />
-        <Route path="board/:boardId/edit-board" element={<EditBoardModal />} />
-        <Route
-          path="board/:boardId/edit-task/:columnIndex/:taskIndex"
+          path="boards/:boardId/tasks/:columnIndex/:taskIndex/edit"
           element={<EditTaskModal />}
         />
         <Route
-          path="board/:boardId/delete-task/:columnIndex/:taskIndex"
+          path="boards/:boardId/tasks/:columnIndex/:taskIndex/delete"
           element={<DeleteTaskModal />}
         />
 
-        <Route path="/board/:boardId" element={<BoardView />}>
-          <Route path="task/:columnIndex/:taskIndex" element={<TaskView />} />
-        </Route>
-        <Route path="/admin" element={<Admin />} />
+        <Route path="boards/:boardId" element={<BoardView />}/>
+          <Route path="boards/:boardId/tasks/:columnIndex/:taskIndex" element={<TaskView />} />
+        
+        <Route path="admin" element={<Admin />} />
       </Route>
 
       <Route path="/404" element={<NotFound />} />

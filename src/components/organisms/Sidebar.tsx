@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Text } from "../atoms/Text";
-import {Logo} from "../molecules/Logo";
+import { Logo } from "../molecules/Logo";
 import Iconboard from "../../assets/images/icon-board.svg?react";
 import IconHideSidebar from "../../assets/images/icon-hide-sidebar.svg?react";
 import IconShowSidebar from "../../assets/images/icon-show-sidebar.svg?react";
@@ -8,20 +8,19 @@ import IconDarkTheme from "../../assets/images/icon-dark-theme.svg?react";
 import IconLightTheme from "../../assets/images/icon-light-theme.svg?react";
 import { useKanbanStore } from "../../store/useKanbanStore";
 
-
-
-
 export default function Sidebar() {
   const { data, sidebarVisible, toggleSidebar } = useKanbanStore();
   const boards = data.boards ?? [];
-    const { theme, toggleTheme } = useKanbanStore();
+  const { theme, toggleTheme } = useKanbanStore();
   return (
     <>
-      <div className={`
+      <div
+        className={`
         fixed top-0 left-0 z-50 h-24 w-75 flex items-center px-8 
         bg-background-secondary  transition-all duration-300
         border-r border-border 
-      `}>
+      `}
+      >
         <Logo />
       </div>
 
@@ -43,7 +42,7 @@ export default function Sidebar() {
             {boards.map((board, index) => (
               <li key={index}>
                 <NavLink
-                  to={`/board/${index}`}
+                  to={`/boards/${index}`}
                   className={({ isActive }) => `
                     flex items-center gap-4 rounded-r-full py-4 pl-8 transition-all
                     ${
@@ -62,7 +61,8 @@ export default function Sidebar() {
             ))}
 
             <li className="pl-8 py-4">
-              <NavLink to='/add-board'
+              <NavLink
+                to="/boards/new"
                 type="button"
                 className="flex items-center gap-4 text-primary hover:opacity-70 transition-opacity"
               >

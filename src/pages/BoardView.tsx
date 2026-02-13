@@ -207,7 +207,7 @@ export default function BoardView() {
                           <SortableTaskLink
                             key={id}
                             id={id}
-                            to={`/board/${index}/task/${columnIndex}/${taskIndex}`}
+                            to={`/boards/${index}/tasks/${columnIndex}/${taskIndex}`}
                           >
                             <Text
                               variant="p3"
@@ -233,7 +233,7 @@ export default function BoardView() {
           })}
 
           <Link
-            to={`/board/${index}/edit-board`}
+            to={`/boards/${index}/edit`}
             type="button"
             className="cursor-pointer
     mt-12 shrink-0 w-70 h-203.5 rounded-md 

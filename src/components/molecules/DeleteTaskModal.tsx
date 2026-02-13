@@ -21,7 +21,7 @@ export default function DeleteTaskModal() {
 
   const handleDelete = () => {
     deleteTask(bIndex, cIndex, tIndex);
-    navigate(`/board/${boardId}`);
+    navigate(`/boards/${boardId}`);
   };
 
   const handleCancel = () => {

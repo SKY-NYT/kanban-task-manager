@@ -12,7 +12,7 @@ import type { Task, Subtask, Column } from "../../types/types";
 export default function EditTaskModal() {
   const { boardId, columnIndex, taskIndex } = useParams();
   const navigate = useNavigate();
-  const { data, updateTask, moveTask } = useKanbanStore();
+  const { data, updateTask, moveTask, subtaskErrors, getCrossIconClass } = useKanbanStore();
 
   const boardIndex = boardId ? Number(boardId) : 0;
   const colIndex = columnIndex ? Number(columnIndex) : 0;
@@ -94,7 +94,7 @@ export default function EditTaskModal() {
               });
             }
 
-            navigate(`/board/${boardId}`);
+            navigate(`/boards/${boardId}`);
           }}
         >
           {/* Title */}
@@ -139,7 +139,9 @@ export default function EditTaskModal() {
                   type="button"
                   onClick={() => handleRemoveSubtask(index)}
                 >
-                  <IconCross className="fill-[#828FA3] hover:fill-danger transition-colors" />
+                  <IconCross
+                    className={getCrossIconClass(Boolean(subtaskErrors[index]))}
+                  />
                 </button>
               </div>
             ))}

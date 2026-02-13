@@ -45,7 +45,7 @@ export default function Dashboard() {
         {boards.map((board, index) => (
           <Link
             key={index}
-            to={`/board/${index}`}
+            to={`/boards/${index}`}
             className="group block rounded-lg border border-border bg-background-secondary p-8 transition-all hover:border-primary shadow-sm"
           >
             <Text

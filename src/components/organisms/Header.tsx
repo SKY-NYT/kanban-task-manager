@@ -26,12 +26,23 @@ export default function Header() {
 
   const handleEditBoard = () => {
     if (!boardId) return;
-    navigate(`/board/${boardId}/edit-board`);
+    navigate(`/boards/${boardId}/edit`);
   };
 
   const handleDeleteBoard = () => {
     if (!boardId) return;
-    navigate(`/board/${boardId}/delete-board`);
+    navigate(`/boards/${boardId}/delete`);
+  };
+
+  const handleAddTask = () => {
+    if (boardId) {
+      navigate(`/boards/${boardId}/tasks/new`);
+      return;
+    }
+
+    // Dashboard: pick first board if available, otherwise create one.
+    if (boards.length > 0) navigate(`/boards/0/tasks/new`);
+    else navigate("/boards/new");
   };
 
   return (
@@ -60,7 +71,7 @@ export default function Header() {
           variant="primary"
           size="md"
           className=" hidden md:block  "
-          onClick={() => navigate("/add-task")}
+          onClick={handleAddTask}
         >
           + Add New Task
         </Button>

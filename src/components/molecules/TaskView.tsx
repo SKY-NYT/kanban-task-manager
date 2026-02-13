@@ -36,11 +36,11 @@ export default function TaskView() {
   }));
 
   const handleEdit = () => {
-    navigate(`/board/${boardId}/edit-task/${cIndex}/${tIndex}`);
+    navigate(`/boards/${boardId}/tasks/${cIndex}/${tIndex}/edit`);
   };
 
   const handleDelete = () => {
-    navigate(`/board/${boardId}/delete-task/${cIndex}/${tIndex}`);
+    navigate(`/boards/${boardId}/tasks/${cIndex}/${tIndex}/delete`);
   };
 
   return (
@@ -89,7 +89,6 @@ export default function TaskView() {
             label="Current Status"
             options={statusOptions}
             value={columnName}
-            
             onChange={(val) => {
               const toColumnIndex = board.columns.findIndex(
                 (c: Column) => c.name === val,
@@ -108,7 +107,7 @@ export default function TaskView() {
               });
 
               navigate(
-                `/board/${boardId}/task/${toColumnIndex}/${toTaskIndex}`,
+                `/boards/${boardId}/tasks/${toColumnIndex}/${toTaskIndex}`,
               );
             }}
           />

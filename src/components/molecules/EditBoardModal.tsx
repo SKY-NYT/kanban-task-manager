@@ -8,9 +8,10 @@ import Button from "../atoms/Buttons";
 import IconCross from "../../assets/images/icon-cross.svg?react";
 import type { Column } from "../../types/types";
 
+
 export default function EditBoardModal() {
   const { boardId } = useParams();
-  const { data } = useKanbanStore();
+  const { data,subtaskErrors, getCrossIconClass } = useKanbanStore();
 
   // Find the current board to pre-populate the form
   const bIndex = boardId ? Number(boardId) : 0;
@@ -78,7 +79,9 @@ export default function EditBoardModal() {
                     onClick={() => handleRemoveColumn(index)}
                     className="group"
                   >
-                    <IconCross className="fill-[#828FA3] group-hover:fill-danger transition-colors" />
+                    <IconCross
+                    className={getCrossIconClass(Boolean(subtaskErrors[index]))}
+                  />
                   </button>
                 </div>
               ))}
