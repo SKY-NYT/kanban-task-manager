@@ -32,7 +32,7 @@
   --color-foreground-secondary: var(--color-preset-gray-300);
   --color-border: var(--color-preset-gray-200);
   --color-menu-background: var(--color-preset-white);
-  --color-todo-background: var(--color-preset-gray-100);
+  --color-todo-background: var(--color-preset-white);
 
   --color-interactive-dynamic: rgba(99, 95, 199, 0.2);
 

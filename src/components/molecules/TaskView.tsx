@@ -89,6 +89,7 @@ export default function TaskView() {
             label="Current Status"
             options={statusOptions}
             value={columnName}
+            
             onChange={(val) => {
               const toColumnIndex = board.columns.findIndex(
                 (c: Column) => c.name === val,

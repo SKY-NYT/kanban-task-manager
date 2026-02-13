@@ -9,7 +9,7 @@ export type Data = {
   boards: Board[];
 };
 
-export type KanbanState = {
+export type KanbanStoreState = {
   data: Data;
   sidebarVisible: boolean;
   theme: ThemeMode;
@@ -46,6 +46,14 @@ export type KanbanState = {
     toColumnIndex: number;
     toTaskIndex?: number;
   }) => void;
+
+ 
+  subtaskErrors: string[];
+  setSubtaskErrors: (errors: string[]) => void;
+  resetSubtaskErrors: () => void;
+
+  
+  getCrossIconClass: (hasError: boolean) => string;
 };
 
 function clampIndex(index: number, maxExclusive: number) {
@@ -84,7 +92,7 @@ function applyAuthToStorage(isLoggedIn: boolean) {
   window.localStorage.setItem("isLoggedIn", isLoggedIn ? "true" : "false");
 }
 
-export const useKanbanStore = create<KanbanState>()(
+export const useKanbanStore = create<KanbanStoreState>()(
   devtools(
     persist(
       (set, get) => ({
@@ -301,6 +309,15 @@ export const useKanbanStore = create<KanbanState>()(
             "kanban/moveTask",
           );
         },
+
+        // UI (global) - Subtask validation errors
+        subtaskErrors: ["", ""],
+        setSubtaskErrors: (errors) => set({ subtaskErrors: errors }),
+        resetSubtaskErrors: () => set({ subtaskErrors: ["", ""] }),
+
+        // UI helper to standardize IconCross styling everywhere
+        getCrossIconClass: (hasError) =>
+          hasError ? "text-danger" : "text-[#828FA3] group-hover:text-danger",
       }),
       {
         name: "kanban-task-manager",

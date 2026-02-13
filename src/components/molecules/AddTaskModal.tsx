@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useKanbanStore } from "../../store/useKanbanStore";
 import Modal from "../atoms/Modal";
@@ -12,7 +12,9 @@ import type { Column, Task, Subtask } from "../../types/types";
 export default function AddTaskModal() {
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const { data, addTask } = useKanbanStore();
+
+  const { data, addTask, subtaskErrors, setSubtaskErrors, resetSubtaskErrors, getCrossIconClass } =
+    useKanbanStore();
 
   const boardIndex = boardId ? Number(boardId) : 0;
   const currentBoard = data.boards?.[boardIndex];
@@ -20,8 +22,18 @@ export default function AddTaskModal() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [subtasks, setSubtasks] = useState(["", ""]);
-  const [subtaskErrors, setSubtaskErrors] = useState<string[]>(["", ""]);
   const [status, setStatus] = useState(currentBoard?.columns?.[0]?.name || "");
+
+  useEffect(() => {
+    // ensure predictable initial state when opening modal
+    resetSubtaskErrors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const syncErrorsLength = (nextLen: number) => {
+    const next = Array.from({ length: nextLen }, (_, i) => subtaskErrors[i] ?? "");
+    setSubtaskErrors(next);
+  };
 
   const statusOptions =
     currentBoard?.columns?.map((col: Column) => ({
@@ -30,13 +42,17 @@ export default function AddTaskModal() {
     })) || [];
 
   const handleAddSubtask = () => {
-    setSubtasks([...subtasks, ""]);
-    setSubtaskErrors([...subtaskErrors, ""]);
+    const nextSubtasks = [...subtasks, ""];
+    setSubtasks(nextSubtasks);
+    syncErrorsLength(nextSubtasks.length);
   };
 
   const handleRemoveSubtask = (index: number) => {
-    setSubtasks(subtasks.filter((_, i) => i !== index));
-    setSubtaskErrors(subtaskErrors.filter((_, i) => i !== index));
+    const nextSubtasks = subtasks.filter((_, i) => i !== index);
+    setSubtasks(nextSubtasks);
+
+    const nextErrors = subtaskErrors.filter((_, i) => i !== index);
+    setSubtaskErrors(nextErrors);
   };
 
   const handleSubtaskChange = (index: number, value: string) => {
@@ -63,24 +79,21 @@ export default function AddTaskModal() {
           onSubmit={(e) => {
             e.preventDefault();
 
-            const nextErrors = subtasks.map((s) =>
-              s.trim().length === 0 ? "Can't be empty" : "",
-            );
+            const nextErrors = subtasks.map((s) => (s.trim().length === 0 ? "Can't be empty" : ""));
             setSubtaskErrors(nextErrors);
 
             const hasErrors = nextErrors.some(Boolean);
             if (hasErrors) return;
 
             if (!currentBoard) return;
-            const toColumnIndex = currentBoard.columns.findIndex(
-              (c: Column) => c.name === status,
-            );
+            const toColumnIndex = currentBoard.columns.findIndex((c: Column) => c.name === status);
             if (toColumnIndex < 0) return;
 
             const nextSubtasks: Subtask[] = subtasks.map((s) => ({
               title: s.trim(),
               isCompleted: false,
             }));
+
             const newTask: Task = {
               title: title.trim(),
               description,
@@ -118,14 +131,11 @@ export default function AddTaskModal() {
             <Text variant="p6" className="text-gray-400 font-bold">
               Subtasks
             </Text>
+
             {subtasks.map((sub, index) => (
               <div key={index} className="flex items-center gap-4">
                 <TextField
-                  placeholder={
-                    index === 0
-                      ? "e.g. Make coffee"
-                      : "e.g. Drink coffee & smile"
-                  }
+                  placeholder={index === 0 ? "e.g. Make coffee" : "e.g. Drink coffee & smile"}
                   value={sub}
                   onChange={(e) => handleSubtaskChange(index, e.target.value)}
                   fullWidth
@@ -137,16 +147,11 @@ export default function AddTaskModal() {
                   onClick={() => handleRemoveSubtask(index)}
                   className="group transition-colors"
                 >
-                  <IconCross
-                    className={
-                      subtaskErrors[index]
-                        ? "text-danger"
-                        : "text-[#828FA3] group-hover:text-danger"
-                    }
-                  />
+                  <IconCross className={getCrossIconClass(Boolean(subtaskErrors[index]))} />
                 </button>
               </div>
             ))}
+
             <Button
               type="button"
               variant="secondary"

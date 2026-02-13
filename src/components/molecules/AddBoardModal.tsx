@@ -5,9 +5,12 @@ import TextField from "../atoms/TextField";
 import { Text } from "../atoms/Text";
 import IconCross from "../../assets/images/icon-cross.svg?react";
 import Modal from "../atoms/Modal";
+import { useKanbanStore } from "../../store/useKanbanStore";
 
 export default function AddBoardModal() {
   const navigate = useNavigate();
+    const {  subtaskErrors,  getCrossIconClass } =
+      useKanbanStore(); 
   const [name, setName] = useState("");
   const [columns, setColumns] = useState(["Todo", "Doing"]);
 
@@ -67,7 +70,7 @@ export default function AddBoardModal() {
                   onClick={() => removeColumn(index)}
                   className="group p-2"
                 >
-                  <IconCross className="fill-[#828FA3] group-hover:fill-danger transition-colors" />
+                  <IconCross className={getCrossIconClass(Boolean(subtaskErrors[index]))} />
                 </button>
               </div>
             ))}
