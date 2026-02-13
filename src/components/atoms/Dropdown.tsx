@@ -52,7 +52,7 @@ export default function Dropdown({
     if (!buttonRef.current) return;
 
     const viewportPadding = 8;
-    const maxMenuHeight = 120; // tailwind max-h-30
+    const maxMenuHeight = 120;
 
     const clamp = (val: number, min: number, max: number) =>
       Math.min(Math.max(val, min), max);
@@ -123,7 +123,7 @@ export default function Dropdown({
       className={`relative w-full flex flex-col gap-2 ${className}`}
     >
       {label && (
-        <Text variant="p4" className="text-gray-400">
+        <Text variant="p6" className="text-gray-400">
           {label}
         </Text>
       )}
@@ -153,7 +153,7 @@ export default function Dropdown({
           <ul
             ref={menuRef}
             style={menuStyle}
-            className="max-h-30 overflow-y-auto rounded-lg bg-todo-background p-4 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)] flex flex-col gap-2"
+            className="max-h-30  right-0 overflow-y-auto rounded-lg bg-todo-background p-4 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)] flex flex-col gap-2"
           >
             {options.map((opt) => (
               <li
