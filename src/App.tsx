@@ -40,9 +40,12 @@ export default function App() {
           element={<DeleteTaskModal />}
         />
 
-        <Route path="boards/:boardId" element={<BoardView />}/>
-          <Route path="boards/:boardId/tasks/:columnIndex/:taskIndex" element={<TaskView />} />
-        
+        <Route path="boards/:boardId" element={<BoardView />} />
+        <Route
+          path="boards/:boardId/tasks/:columnIndex/:taskIndex"
+          element={<TaskView />}
+        />
+
         <Route path="admin" element={<Admin />} />
       </Route>
 
