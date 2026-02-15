@@ -3,15 +3,12 @@ import Header from "../organisms/Header";
 import Sidebar from "../organisms/Sidebar";
 
 export default function MainLayout() {
-  
-
-
   return (
-    <div className="flex h-screen bg-background text-foreground  transition-colors duration-300"    >
-      <Sidebar  />
-      <div className="flex flex-1 flex-col">
-        <Header  />
-        <main className="flex-1 overflow-auto bg-[--color-background-secondary] dark:bg-[--color-dark-background-secondary] p-6">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+      <Sidebar />
+      <div className="flex flex-col min-h-screen transition-all duration-300 ml-0 md:ml-[261px] lg:ml-[300px]">
+        <Header />
+        <main className="flex-1 bg-background pt-16 md:pt-24 overflow-hidden">
           <Outlet />
         </main>
       </div>

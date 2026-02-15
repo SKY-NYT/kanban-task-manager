@@ -4,14 +4,12 @@ import { Text } from "../components/atoms/Text";
 import Button from "../components/atoms/Buttons";
 
 export default function Dashboard() {
-  const { data, sidebarVisible } = useApp();
+  const { data } = useApp();
   const boards = data.boards ?? [];
 
   if (boards.length === 0) {
     return (
-      <main
-        className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "pl-75" : "pl-0"}`}
-      >
+      <div className="h-full flex items-center justify-center bg-background">
         <div className="text-center">
           <Text variant="p2" className="text-gray-400 mb-6">
             This account has no boards.
@@ -20,18 +18,12 @@ export default function Dashboard() {
             + Create New Board
           </Button>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main
-      className={`
-        w-full fixed z-30 h-full overflow-y-auto
-        transition-all duration-300 pt-24 px-8
-        ${sidebarVisible ? "ml-75" : "ml-0"}
-      `}
-    >
+    <div className="h-full overflow-y-auto px-6 py-6 bg-background">
       <header className="mb-10">
         <Text variant="p2" className="text-foreground mb-2">
           All Boards
@@ -67,6 +59,6 @@ export default function Dashboard() {
           </Text>
         </button>
       </div>
-    </main>
+    </div>
   );
 }
