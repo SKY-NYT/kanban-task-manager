@@ -1,5 +1,5 @@
 // AppProvider.tsx
-import { useState, type ReactNode } from "react";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { AppContext, type Data } from "./AppContext";
 import boardData from "../data/data.json";
 
@@ -11,19 +11,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return window.matchMedia("(min-width: 768px)").matches;
   });
 
-  const toggleSidebar = () => setSidebarVisible((prev) => !prev);
-
-  return (
-    <AppContext.Provider
-      value={{
-        data,
-        setData,
-        sidebarVisible,
-        setSidebarVisible,
-        toggleSidebar,
-      }}
-    >
-      {children}
-    </AppContext.Provider>
+  const toggleSidebar = useCallback(
+    () => setSidebarVisible((prev) => !prev),
+    [],
   );
+
+  const value = useMemo(
+    () => ({
+      data,
+      setData,
+      sidebarVisible,
+      setSidebarVisible,
+      toggleSidebar,
+    }),
+    [data, sidebarVisible, toggleSidebar],
+  );
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

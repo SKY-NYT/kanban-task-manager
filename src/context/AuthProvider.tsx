@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { AuthContext, type AuthContextType } from "./AuthContext";
 
@@ -15,14 +15,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("isLoggedIn", isLoggedIn ? "true" : "false");
   }, [isLoggedIn]);
 
-  const login = () => setIsLoggedIn(true);
-  const logout = () => setIsLoggedIn(false);
+  const login = useCallback(() => setIsLoggedIn(true), []);
+  const logout = useCallback(() => setIsLoggedIn(false), []);
 
-  const value: AuthContextType = {
-    isLoggedIn,
-    login,
-    logout,
-  };
+  const value: AuthContextType = useMemo(
+    () => ({
+      isLoggedIn,
+      login,
+      logout,
+    }),
+    [isLoggedIn, login, logout],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
