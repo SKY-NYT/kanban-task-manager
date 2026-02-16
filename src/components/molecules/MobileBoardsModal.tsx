@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useKanbanStore } from "../../store/useKanbanStore";
+import { shallow } from "zustand/shallow";
 import Modal from "../atoms/Modal";
 import { Text } from "../atoms/Text";
 import IconBoard from "../../assets/images/icon-board.svg?react";
@@ -17,9 +18,14 @@ export default function MobileBoardsModal({
 }: MobileBoardsModalProps) {
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const { data, theme, toggleTheme } = useKanbanStore();
-
-  const boards = data.boards ?? [];
+  const { boards, theme, toggleTheme } = useKanbanStore(
+    (s) => ({
+      boards: s.data.boards ?? [],
+      theme: s.theme,
+      toggleTheme: s.toggleTheme,
+    }),
+    shallow,
+  );
   const activeIndex = boardId ? Number(boardId) : 0;
 
   if (!isOpen) return null;

@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import { useKanbanStore } from "../store/useKanbanStore";
+import { shallow } from "zustand/shallow";
 import { Text } from "../components/atoms/Text";
 import Button from "../components/atoms/Buttons";
 
 export default function Dashboard() {
-  const { data, sidebarVisible } = useKanbanStore();
-  const boards = data.boards ?? [];
+  const { boards, sidebarVisible } = useKanbanStore(
+    (s) => ({ boards: s.data.boards ?? [], sidebarVisible: s.sidebarVisible }),
+    shallow,
+  );
 
   if (boards.length === 0) {
     return (

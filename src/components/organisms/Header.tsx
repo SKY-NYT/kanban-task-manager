@@ -4,6 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { Text } from "../atoms/Text";
 import Button from "../atoms/Buttons";
 import { useKanbanStore } from "../../store/useKanbanStore";
+import { shallow } from "zustand/shallow";
 import Menu from "../atoms/Menu";
 import { Logo } from "../molecules/Logo";
 import ChevronDown from "../../assets/images/icon-chevron-down.svg?react";
@@ -15,10 +16,11 @@ export default function Header() {
   const { boardId } = useParams();
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const { data, sidebarVisible } = useKanbanStore();
+  const { boards, sidebarVisible } = useKanbanStore(
+    (s) => ({ boards: s.data.boards ?? [], sidebarVisible: s.sidebarVisible }),
+    shallow,
+  );
   const [isMobileBoardsOpen, setIsMobileBoardsOpen] = useState(false);
-
-  const boards = data.boards ?? [];
 
   const isDashboard = boardId === undefined;
   const currentBoard = boardId ? boards[Number(boardId)] : null;

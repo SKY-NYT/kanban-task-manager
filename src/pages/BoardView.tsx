@@ -1,8 +1,10 @@
+import { useCallback } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { Text } from "../components/atoms/Text";
 import { useKanbanStore } from "../store/useKanbanStore";
 import { Outlet } from "react-router-dom";
 import Button from "../components/atoms/Buttons";
+import { shallow } from "zustand/shallow";
 import {
   DndContext,
   PointerSensor,
@@ -96,54 +98,64 @@ function SortableTaskLink({
 export default function BoardView() {
   const { boardId } = useParams();
   const location = useLocation();
-  const { data, sidebarVisible, moveTask } = useKanbanStore();
-  const boards = data.boards ?? [];
   const index = boardId ? Number(boardId) : 0;
-  const board = boards[index];
+
+  const { board, boardsCount, sidebarVisible, moveTask } = useKanbanStore(
+    (s) => ({
+      board: s.data.boards?.[index],
+      boardsCount: s.data.boards?.length ?? 0,
+      sidebarVisible: s.sidebarVisible,
+      moveTask: s.moveTask,
+    }),
+    shallow,
+  );
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     useSensor(KeyboardSensor),
   );
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    if (!board) return;
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      if (!board) return;
 
-    const { active, over } = event;
-    if (!over) return;
+      const { active, over } = event;
+      if (!over) return;
 
-    const activeId = String(active.id);
-    const overId = String(over.id);
-    if (activeId === overId) return;
+      const activeId = String(active.id);
+      const overId = String(over.id);
+      if (activeId === overId) return;
 
-    const from = parseTaskDndId(activeId);
-    if (!from) return;
+      const from = parseTaskDndId(activeId);
+      if (!from) return;
 
-    const overTask = parseTaskDndId(overId);
-    const overColumn = parseColumnDndId(overId);
+      const overTask = parseTaskDndId(overId);
+      const overColumn = parseColumnDndId(overId);
 
-    const toColumnIndex = overTask?.columnIndex ?? overColumn?.columnIndex;
-    if (typeof toColumnIndex !== "number") return;
+      const toColumnIndex = overTask?.columnIndex ?? overColumn?.columnIndex;
+      if (typeof toColumnIndex !== "number") return;
 
-    let toTaskIndex = overTask?.taskIndex;
-    if (
-      typeof toTaskIndex === "number" &&
-      from.columnIndex === toColumnIndex &&
-      from.taskIndex < toTaskIndex
-    ) {
-      toTaskIndex = toTaskIndex - 1;
-    }
+      let toTaskIndex = overTask?.taskIndex;
+      if (
+        typeof toTaskIndex === "number" &&
+        from.columnIndex === toColumnIndex &&
+        from.taskIndex < toTaskIndex
+      ) {
+        toTaskIndex = toTaskIndex - 1;
+      }
 
-    moveTask({
-      boardIndex: index,
-      fromColumnIndex: from.columnIndex,
-      taskIndex: from.taskIndex,
-      toColumnIndex,
-      toTaskIndex,
-    });
-  };
+      moveTask({
+        boardIndex: index,
+        fromColumnIndex: from.columnIndex,
+        taskIndex: from.taskIndex,
+        toColumnIndex,
+        toTaskIndex,
+      });
+    },
+    [board, index, moveTask],
+  );
 
-  if (boards.length === 0) {
+  if (boardsCount === 0) {
     return (
       <main
         className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "md:pl-65 lg:pl-75" : "pl-0"}`}

@@ -7,11 +7,20 @@ import IconShowSidebar from "../../assets/images/icon-show-sidebar.svg?react";
 import IconDarkTheme from "../../assets/images/icon-dark-theme.svg?react";
 import IconLightTheme from "../../assets/images/icon-light-theme.svg?react";
 import { useKanbanStore } from "../../store/useKanbanStore";
+import { shallow } from "zustand/shallow";
 
 export default function Sidebar() {
-  const { data, sidebarVisible, toggleSidebar } = useKanbanStore();
-  const boards = data.boards ?? [];
-  const { theme, toggleTheme } = useKanbanStore();
+  const { boards, sidebarVisible, toggleSidebar, theme, toggleTheme } =
+    useKanbanStore(
+      (s) => ({
+        boards: s.data.boards ?? [],
+        sidebarVisible: s.sidebarVisible,
+        toggleSidebar: s.toggleSidebar,
+        theme: s.theme,
+        toggleTheme: s.toggleTheme,
+      }),
+      shallow,
+    );
   return (
     <>
       <div

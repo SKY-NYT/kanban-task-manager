@@ -1,5 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useKanbanStore } from "../../store/useKanbanStore";
+import { shallow } from "zustand/shallow";
 import { Text } from "../atoms/Text";
 import Modal from "../atoms/Modal";
 import Dropdown from "../atoms/Dropdown";
@@ -12,15 +13,19 @@ export default function TaskView() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { data, moveTask, updateTask, deleteTask } = useKanbanStore();
-
-  const boards = data.boards ?? [];
-
   const bIndex = boardId ? Number(boardId) : 0;
-  const board = boards[bIndex];
-
   const cIndex = columnIndex ? Number(columnIndex) : 0;
   const tIndex = taskIndex ? Number(taskIndex) : 0;
+
+  const { board, moveTask, updateTask, deleteTask } = useKanbanStore(
+    (s) => ({
+      board: s.data.boards?.[bIndex],
+      moveTask: s.moveTask,
+      updateTask: s.updateTask,
+      deleteTask: s.deleteTask,
+    }),
+    shallow,
+  );
 
   const col = board?.columns?.[cIndex];
   const task = col?.tasks?.[tIndex];
