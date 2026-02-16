@@ -64,13 +64,7 @@ export default function Dashboard() {
             </Text>
           </Link>
         ))}
-        <button className="cursor-pointer min-h-37.5 rounded-md border-2 border-dashed border-border bg-background-secondary/50 flex items-center justify-center group transition-all duration-300">
-          {" "}
-          <Text variant="p1" className="text-gray-400 group-hover:text-primary">
-            {" "}
-            + New Board
-          </Text>
-        </button>
+       
       </div>
     </main>
   );
