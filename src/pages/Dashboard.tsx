@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useKanbanStore } from "../store/useKanbanStore";
 import { Text } from "../components/atoms/Text";
 import Button from "../components/atoms/Buttons";
 import { useShallow } from "zustand/shallow";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { boards, sidebarVisible } = useKanbanStore(
     useShallow((s) => ({
       boards: s.data.boards,
@@ -19,9 +21,17 @@ export default function Dashboard() {
       >
         <div className="text-center">
           <Text variant="p2" className="text-gray-400 mb-6">
-           This board is empty. Create a new column to get started.
+            This board is empty. Create a new column to get started.
           </Text>
-          <Button variant="primary" size="md">
+          <Button
+            variant="primary"
+            size="md"
+            onClick={() =>
+              navigate("/boards/new", {
+                state: { backgroundLocation: location },
+              })
+            }
+          >
             + Create New Board
           </Button>
         </div>
@@ -64,10 +74,15 @@ export default function Dashboard() {
             </Text>
           </Link>
         ))}
-        <button className="cursor-pointer min-h-37.5 rounded-md border-2 border-dashed border-border bg-background-secondary/50 flex items-center justify-center group transition-all duration-300">
-          {" "}
+        <button
+          className="cursor-pointer min-h-37.5 rounded-md border-2 border-dashed border-border bg-background-secondary/50 flex items-center justify-center group transition-all duration-300"
+          onClick={() =>
+            navigate("/boards/new", {
+              state: { backgroundLocation: location },
+            })
+          }
+        >
           <Text variant="p1" className="text-gray-400 group-hover:text-primary">
-            {" "}
             + New Board
           </Text>
         </button>
