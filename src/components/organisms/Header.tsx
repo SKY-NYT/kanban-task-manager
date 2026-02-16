@@ -4,7 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { Text } from "../atoms/Text";
 import Button from "../atoms/Buttons";
 import { useKanbanStore } from "../../store/useKanbanStore";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import Menu from "../atoms/Menu";
 import { Logo } from "../molecules/Logo";
 import ChevronDown from "../../assets/images/icon-chevron-down.svg?react";
@@ -17,8 +17,10 @@ export default function Header() {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const { boards, sidebarVisible } = useKanbanStore(
-    (s) => ({ boards: s.data.boards ?? [], sidebarVisible: s.sidebarVisible }),
-    shallow,
+    useShallow((s) => ({
+      boards: s.data.boards ?? [],
+      sidebarVisible: s.sidebarVisible,
+    })),
   );
   const [isMobileBoardsOpen, setIsMobileBoardsOpen] = useState(false);
 

@@ -4,7 +4,7 @@ import { Text } from "../components/atoms/Text";
 import { useKanbanStore } from "../store/useKanbanStore";
 import { Outlet } from "react-router-dom";
 import Button from "../components/atoms/Buttons";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import {
   DndContext,
   PointerSensor,
@@ -101,13 +101,12 @@ export default function BoardView() {
   const index = boardId ? Number(boardId) : 0;
 
   const { board, boardsCount, sidebarVisible, moveTask } = useKanbanStore(
-    (s) => ({
+    useShallow((s) => ({
       board: s.data.boards?.[index],
       boardsCount: s.data.boards?.length ?? 0,
       sidebarVisible: s.sidebarVisible,
       moveTask: s.moveTask,
-    }),
-    shallow,
+    })),
   );
 
   const sensors = useSensors(
