@@ -47,9 +47,11 @@ export default function EditTaskModal() {
 
         {feedback && (
           <Text
+            key={feedback.message}
             variant="p6"
             className={
-              feedback.type === "success" ? "text-primary" : "text-danger"
+              (feedback.type === "success" ? "text-primary" : "text-danger") +
+              " animate-in fade-in duration-200"
             }
             role={feedback.type === "success" ? "status" : "alert"}
           >

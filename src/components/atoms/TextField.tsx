@@ -2,7 +2,7 @@ import { useId, type InputHTMLAttributes } from "react";
 import { Text } from "./Text";
 
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
+  label?: React.ReactNode;
   error?: string;
   fullWidth?: boolean;
 }
@@ -12,9 +12,11 @@ export default function TextField({
   error,
   fullWidth,
   className,
+  id: idProp,
   ...rest
 }: TextFieldProps) {
-  const id = useId();
+  const autoId = useId();
+  const id = idProp ?? autoId;
   const hasError = Boolean(error);
   const errorId = `${id}-error`;
 
@@ -25,9 +27,13 @@ export default function TextField({
     <div className={`flex flex-col gap-2 ${fullWidth ? "w-full" : "w-87.5"}`}>
       {label && (
         <label htmlFor={id}>
-          <Text variant="p6" className="text-gray-400">
-            {label}
-          </Text>
+          {typeof label === "string" ? (
+            <Text variant="p6" className="text-gray-400">
+              {label}
+            </Text>
+          ) : (
+            label
+          )}
         </label>
       )}
       <div className="relative flex items-center">
