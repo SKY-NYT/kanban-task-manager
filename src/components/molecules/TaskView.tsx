@@ -6,15 +6,20 @@ import Dropdown from "../atoms/Dropdown";
 import { SubtaskCheckbox } from "../atoms/SubtaskCheckbox";
 import Menu from "../atoms/Menu";
 import type { Subtask, Column } from "../../types/types";
+import { useShallow } from "zustand/shallow";
 
 export default function TaskView() {
   const { boardId, columnIndex, taskIndex } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { data, moveTask, updateTask } = useKanbanStore();
-
-  const boards = data.boards ?? [];
+  const { boards, moveTask, updateTask } = useKanbanStore(
+    useShallow((s) => ({
+      boards: s.data.boards,
+      moveTask: s.moveTask,
+      updateTask: s.updateTask,
+    })),
+  );
 
   const bIndex = boardId ? Number(boardId) : 0;
   const board = boards[bIndex];

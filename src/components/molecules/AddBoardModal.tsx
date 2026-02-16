@@ -6,10 +6,18 @@ import { Text } from "../atoms/Text";
 import IconCross from "../../assets/images/icon-cross.svg?react";
 import Modal from "../atoms/Modal";
 import { useKanbanStore } from "../../store/useKanbanStore";
+import { useShallow } from "zustand/shallow";
 
 export default function AddBoardModal() {
   const navigate = useNavigate();
-  const { data, addBoard, addColumn, getCrossIconClass } = useKanbanStore();
+  const { data, addBoard, addColumn, getCrossIconClass } = useKanbanStore(
+    useShallow((s) => ({
+      data: s.data,
+      addBoard: s.addBoard,
+      addColumn: s.addColumn,
+      getCrossIconClass: s.getCrossIconClass,
+    })),
+  );
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
   const [columns, setColumns] = useState(["Todo", "Doing"]);

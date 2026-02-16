@@ -3,11 +3,14 @@ import { useKanbanStore } from "../../store/useKanbanStore";
 import Modal from "../atoms/Modal";
 import { Text } from "../atoms/Text";
 import Button from "../atoms/Buttons";
+import { useShallow } from "zustand/shallow";
 
 export default function DeleteBoardModal() {
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const { data, deleteBoard } = useKanbanStore();
+  const { data, deleteBoard } = useKanbanStore(
+    useShallow((s) => ({ data: s.data, deleteBoard: s.deleteBoard })),
+  );
 
   const bIndex = boardId ? Number(boardId) : 0;
   const boardName = data.boards?.[bIndex]?.name || "";

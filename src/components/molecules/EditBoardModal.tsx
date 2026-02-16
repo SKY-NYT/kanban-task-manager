@@ -7,11 +7,18 @@ import TextField from "../atoms/TextField";
 import Button from "../atoms/Buttons";
 import IconCross from "../../assets/images/icon-cross.svg?react";
 import type { Column } from "../../types/types";
+import { useShallow } from "zustand/shallow";
 
 export default function EditBoardModal() {
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const { data, setData, getCrossIconClass } = useKanbanStore();
+  const { data, setData, getCrossIconClass } = useKanbanStore(
+    useShallow((s) => ({
+      data: s.data,
+      setData: s.setData,
+      getCrossIconClass: s.getCrossIconClass,
+    })),
+  );
 
   // Find the current board to pre-populate the form
   const bIndex = boardId ? Number(boardId) : 0;

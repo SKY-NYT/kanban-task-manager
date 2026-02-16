@@ -8,6 +8,7 @@ import Dropdown from "../atoms/Dropdown";
 import Button from "../atoms/Buttons";
 import IconCross from "../../assets/images/icon-cross.svg?react";
 import type { Task, Subtask, Column } from "../../types/types";
+import { useShallow } from "zustand/shallow";
 
 export default function EditTaskModal() {
   const { boardId, columnIndex, taskIndex } = useParams();
@@ -20,7 +21,17 @@ export default function EditTaskModal() {
     setSubtaskErrors,
     resetSubtaskErrors,
     getCrossIconClass,
-  } = useKanbanStore();
+  } = useKanbanStore(
+    useShallow((s) => ({
+      data: s.data,
+      updateTask: s.updateTask,
+      moveTask: s.moveTask,
+      subtaskErrors: s.subtaskErrors,
+      setSubtaskErrors: s.setSubtaskErrors,
+      resetSubtaskErrors: s.resetSubtaskErrors,
+      getCrossIconClass: s.getCrossIconClass,
+    })),
+  );
 
   const boardIndex = boardId ? Number(boardId) : 0;
   const colIndex = columnIndex ? Number(columnIndex) : 0;

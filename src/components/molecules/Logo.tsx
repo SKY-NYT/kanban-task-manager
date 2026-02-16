@@ -4,11 +4,10 @@ import LogoLight from "../../assets/images/logo-light.svg?react";
 import LogoMobile from "../../assets/images/logo-mobile.svg?react";
 
 export const Logo = () => {
-  const { theme } = useKanbanStore();
+  const theme = useKanbanStore((s) => s.theme);
 
   return (
     <div className="flex items-center">
-
       <div className="md:hidden">
         <LogoMobile />
       </div>

@@ -10,16 +10,20 @@ import ChevronDown from "../../assets/images/icon-chevron-down.svg?react";
 import ChevronUp from "../../assets/images/icon-chevron-up.svg?react";
 import IconAddTaskMobile from "../../assets/images/icon-add-task-mobile.svg?react";
 import MobileBoardsModal from "../molecules/MobileBoardsModal";
+import { useShallow } from "zustand/shallow";
 
 export default function Header() {
   const { boardId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const { logout } = useAuth();
-  const { data, sidebarVisible } = useKanbanStore();
+  const { boards, sidebarVisible } = useKanbanStore(
+    useShallow((s) => ({
+      boards: s.data.boards,
+      sidebarVisible: s.sidebarVisible,
+    })),
+  );
   const [isMobileBoardsOpen, setIsMobileBoardsOpen] = useState(false);
-
-  const boards = data.boards ?? [];
 
   const isDashboard = boardId === undefined;
   const currentBoard = boardId ? boards[Number(boardId)] : null;

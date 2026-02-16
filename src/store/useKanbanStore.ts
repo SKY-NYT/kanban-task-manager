@@ -47,12 +47,10 @@ export type KanbanStoreState = {
     toTaskIndex?: number;
   }) => void;
 
- 
   subtaskErrors: string[];
   setSubtaskErrors: (errors: string[]) => void;
   resetSubtaskErrors: () => void;
 
-  
   getCrossIconClass: (hasError: boolean) => string;
 };
 
@@ -92,14 +90,20 @@ function applyAuthToStorage(isLoggedIn: boolean) {
   window.localStorage.setItem("isLoggedIn", isLoggedIn ? "true" : "false");
 }
 
+const initialTheme = getInitialTheme();
+applyThemeToDocument(initialTheme);
+
+const initialIsLoggedIn = getInitialIsLoggedIn();
+applyAuthToStorage(initialIsLoggedIn);
+
 export const useKanbanStore = create<KanbanStoreState>()(
   devtools(
     persist(
       (set, get) => ({
         data: boardData as unknown as Data,
         sidebarVisible: true,
-        theme: getInitialTheme(),
-        isLoggedIn: getInitialIsLoggedIn(),
+        theme: initialTheme,
+        isLoggedIn: initialIsLoggedIn,
 
         setData: (next) =>
           set(
@@ -123,13 +127,34 @@ export const useKanbanStore = create<KanbanStoreState>()(
           ),
         toggleTheme: () =>
           set(
-            (s) => ({ theme: s.theme === "light" ? "dark" : "light" }),
+            (s) => {
+              const nextTheme: ThemeMode =
+                s.theme === "light" ? "dark" : "light";
+              applyThemeToDocument(nextTheme);
+              return { theme: nextTheme };
+            },
             false,
             "app/toggleTheme",
           ),
 
-        login: () => set({ isLoggedIn: true }, false, "auth/login"),
-        logout: () => set({ isLoggedIn: false }, false, "auth/logout"),
+        login: () =>
+          set(
+            () => {
+              applyAuthToStorage(true);
+              return { isLoggedIn: true };
+            },
+            false,
+            "auth/login",
+          ),
+        logout: () =>
+          set(
+            () => {
+              applyAuthToStorage(false);
+              return { isLoggedIn: false };
+            },
+            false,
+            "auth/logout",
+          ),
 
         addBoard: (name) =>
           set(
@@ -337,26 +362,3 @@ export const useKanbanStore = create<KanbanStoreState>()(
     ),
   ),
 );
-
-let __hasStoreSync = false;
-if (typeof window !== "undefined" && !__hasStoreSync) {
-  __hasStoreSync = true;
-
-  let lastTheme: ThemeMode = useKanbanStore.getState().theme;
-  let lastIsLoggedIn: boolean = useKanbanStore.getState().isLoggedIn;
-
-  applyThemeToDocument(lastTheme);
-  applyAuthToStorage(lastIsLoggedIn);
-
-  useKanbanStore.subscribe((state) => {
-    if (state.theme !== lastTheme) {
-      lastTheme = state.theme;
-      applyThemeToDocument(lastTheme);
-    }
-
-    if (state.isLoggedIn !== lastIsLoggedIn) {
-      lastIsLoggedIn = state.isLoggedIn;
-      applyAuthToStorage(lastIsLoggedIn);
-    }
-  });
-}

@@ -19,6 +19,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useDroppable } from "@dnd-kit/core";
+import { useShallow } from "zustand/shallow";
 
 function taskDndId(columnIndex: number, taskIndex: number) {
   return `task-${columnIndex}-${taskIndex}`;
@@ -96,8 +97,13 @@ function SortableTaskLink({
 export default function BoardView() {
   const { boardId } = useParams();
   const location = useLocation();
-  const { data, sidebarVisible, moveTask } = useKanbanStore();
-  const boards = data.boards ?? [];
+  const { boards, sidebarVisible, moveTask } = useKanbanStore(
+    useShallow((s) => ({
+      boards: s.data.boards,
+      sidebarVisible: s.sidebarVisible,
+      moveTask: s.moveTask,
+    })),
+  );
   const index = boardId ? Number(boardId) : 0;
   const board = boards[index];
 

@@ -5,6 +5,7 @@ import { Text } from "../atoms/Text";
 import IconBoard from "../../assets/images/icon-board.svg?react";
 import IconDarkTheme from "../../assets/images/icon-dark-theme.svg?react";
 import IconLightTheme from "../../assets/images/icon-light-theme.svg?react";
+import { useShallow } from "zustand/shallow";
 
 type MobileBoardsModalProps = {
   isOpen: boolean;
@@ -18,9 +19,14 @@ export default function MobileBoardsModal({
   const { boardId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { data, theme, toggleTheme } = useKanbanStore();
+  const { boards, theme, toggleTheme } = useKanbanStore(
+    useShallow((s) => ({
+      boards: s.data.boards,
+      theme: s.theme,
+      toggleTheme: s.toggleTheme,
+    })),
+  );
 
-  const boards = data.boards ?? [];
   const activeIndex = boardId ? Number(boardId) : 0;
 
   if (!isOpen) return null;

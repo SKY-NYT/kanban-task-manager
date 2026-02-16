@@ -4,11 +4,14 @@ import Modal from "../atoms/Modal";
 import { Text } from "../atoms/Text";
 import Button from "../atoms/Buttons";
 import type { Task } from "../../types/types";
+import { useShallow } from "zustand/shallow";
 
 export default function DeleteTaskModal() {
   const { boardId, columnIndex, taskIndex } = useParams();
   const navigate = useNavigate();
-  const { data, deleteTask } = useKanbanStore();
+  const { data, deleteTask } = useKanbanStore(
+    useShallow((s) => ({ data: s.data, deleteTask: s.deleteTask })),
+  );
 
   const bIndex = boardId ? Number(boardId) : 0;
   const cIndex = columnIndex ? Number(columnIndex) : 0;
