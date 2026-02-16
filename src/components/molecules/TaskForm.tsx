@@ -219,7 +219,7 @@ export default function TaskForm({
         aria-describedby={titleMetaId}
       />
 
-      <div className="-mt-4 flex justify-end">
+      <div className="-mt-1 flex justify-end">
         <Text
           id={titleMetaId}
           variant="p6"
@@ -362,7 +362,7 @@ export default function TaskForm({
                     error={subtaskErrors[index]}
                     aria-describedby={subtaskCountId}
                   />
-                  <div className="-mt-4 flex justify-end">
+                  <div className="-mt-1 flex justify-end">
                     <Text
                       id={subtaskCountId}
                       variant="p6"
