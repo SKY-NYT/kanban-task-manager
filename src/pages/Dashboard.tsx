@@ -19,7 +19,7 @@ export default function Dashboard() {
       >
         <div className="text-center">
           <Text variant="p2" className="text-gray-400 mb-6">
-            This account has no boards.
+           This board is empty. Create a new column to get started.
           </Text>
           <Button variant="primary" size="md">
             + Create New Board
