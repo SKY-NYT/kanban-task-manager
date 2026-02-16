@@ -258,7 +258,7 @@ export default function BoardView() {
           })}
 
           <Link
-            to={`/boards/${index}/tasks/new`}
+            to={`/boards/${index}/edit`}
             state={{ backgroundLocation: location }}
             type="button"
             className="cursor-pointer
@@ -271,7 +271,7 @@ export default function BoardView() {
               variant="p1"
               className="text-gray-400 group-hover:text-primary transition-colors"
             >
-              + New Task
+              + New Column
             </Text>
           </Link>
         </div>
