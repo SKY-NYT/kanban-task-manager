@@ -1,5 +1,19 @@
 # React + TypeScript + Vite
 
+## Testing (Vitest)
+
+Scripts:
+
+- `npm test` - run tests
+- `npm run test:watch` - re-run tests on file changes
+- `npm run test:coverage` - run tests + generate coverage in `coverage/`
+
+Test structure:
+
+- `src/__tests__/` - component/page/store tests
+- `src/test/setup.ts` - test environment setup (jest-dom, cleanup, small DOM shims)
+- `src/test/test-utils.tsx` - shared helpers (router rendering + store reset)
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

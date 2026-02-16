@@ -6,6 +6,23 @@ import svgr from "vite-plugin-svgr";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), svgr()],
+  test: {
+    environment: "jsdom",
+    setupFiles: ["./src/test/setup.ts"],
+    css: true,
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html"],
+      reportsDirectory: "./coverage",
+      exclude: [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/coverage/**",
+        "src/main.tsx",
+        "src/declarations.d.ts",
+      ],
+    },
+  },
   build: {
     rollupOptions: {
       output: {

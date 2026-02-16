@@ -7,14 +7,45 @@ import { useShallow } from "zustand/shallow";
 export default function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { boards, sidebarVisible } = useKanbanStore(
+  const { boards, sidebarVisible, remote, fetchRemoteData } = useKanbanStore(
     useShallow((s) => ({
       boards: s.data.boards,
       sidebarVisible: s.sidebarVisible,
+      remote: s.remote,
+      fetchRemoteData: s.fetchRemoteData,
     })),
   );
 
   if (boards.length === 0) {
+    if (remote.isLoading) {
+      return (
+        <main
+          className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "md:pl-65 lg:pl-75" : "pl-0"}`}
+        >
+          <Text variant="p2" className="text-gray-400" role="status">
+            Loading boards...
+          </Text>
+        </main>
+      );
+    }
+
+    if (remote.error) {
+      return (
+        <main
+          className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "md:pl-65 lg:pl-75" : "pl-0"}`}
+        >
+          <div className="text-center max-w-lg px-6">
+            <Text variant="p2" className="text-danger mb-6" role="alert">
+              {remote.error}
+            </Text>
+            <Button variant="primary" size="md" onClick={fetchRemoteData}>
+              Retry
+            </Button>
+          </div>
+        </main>
+      );
+    }
+
     return (
       <main
         className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "md:pl-65 lg:pl-75" : "pl-0"}`}
