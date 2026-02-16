@@ -18,6 +18,12 @@ export default function TextField({
   const hasError = Boolean(error);
   const errorId = `${id}-error`;
 
+  const describedByFromProps = rest["aria-describedby"];
+  const describedBy = [describedByFromProps, hasError ? errorId : undefined]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
+
   const inputClassName = `h-10 w-full px-4 rounded-sm bg-background-secondary outline-none border font-sans text-[13px] transition-all
             ${hasError ? "border-danger" : "border-[#828fa340] focus:border-primary"} ${className}`;
 
@@ -35,7 +41,7 @@ export default function TextField({
           <input
             id={id}
             aria-invalid="true"
-            aria-describedby={errorId}
+            aria-describedby={describedBy ? describedBy : undefined}
             className={inputClassName}
             {...rest}
           />
@@ -43,6 +49,7 @@ export default function TextField({
           <input
             id={id}
             aria-invalid="false"
+            aria-describedby={describedBy ? describedBy : undefined}
             className={inputClassName}
             {...rest}
           />

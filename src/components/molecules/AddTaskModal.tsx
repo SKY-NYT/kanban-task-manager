@@ -42,9 +42,11 @@ export default function AddTaskModal() {
           <Text
             variant="p6"
             className={
-              feedback.type === "success" ? "text-primary" : "text-danger"
+              (feedback.type === "success" ? "text-primary" : "text-danger") +
+              " animate-in fade-in zoom-in-95 duration-200"
             }
             role={feedback.type === "success" ? "status" : "alert"}
+            aria-live={feedback.type === "success" ? "polite" : "assertive"}
           >
             {feedback.message}
           </Text>
