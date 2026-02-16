@@ -238,8 +238,7 @@ export default function BoardView() {
           })}
 
           <Link
-            to={`/boards/${index}/edit`}
-            state={{ backgroundLocation: location }}
+            to={`/boards/${index}`}
             type="button"
             className="cursor-pointer
     mt-12 shrink-0 w-70 h-203.5 rounded-md 

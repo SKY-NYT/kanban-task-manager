@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useKanbanStore } from "../../store/useKanbanStore";
 import Modal from "../atoms/Modal";
 import { Text } from "../atoms/Text";
@@ -17,7 +17,6 @@ export default function MobileBoardsModal({
 }: MobileBoardsModalProps) {
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const { data, theme, toggleTheme } = useKanbanStore();
 
   const boards = data.boards ?? [];
@@ -67,9 +66,6 @@ export default function MobileBoardsModal({
             <button
               type="button"
               onClick={() => {
-                navigate("/boards/new", {
-                  state: { backgroundLocation: location },
-                });
                 onClose();
               }}
               className="flex w-full items-center gap-3 py-3 pl-4 pr-6 text-primary hover:opacity-80 transition-opacity"

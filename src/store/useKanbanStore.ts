@@ -46,14 +46,6 @@ export type KanbanStoreState = {
     toColumnIndex: number;
     toTaskIndex?: number;
   }) => void;
-
- 
-  subtaskErrors: string[];
-  setSubtaskErrors: (errors: string[]) => void;
-  resetSubtaskErrors: () => void;
-
-  
-  getCrossIconClass: (hasError: boolean) => string;
 };
 
 function clampIndex(index: number, maxExclusive: number) {
@@ -309,15 +301,6 @@ export const useKanbanStore = create<KanbanStoreState>()(
             "kanban/moveTask",
           );
         },
-
-        // UI (global) - Subtask validation errors
-        subtaskErrors: ["", ""],
-        setSubtaskErrors: (errors) => set({ subtaskErrors: errors }),
-        resetSubtaskErrors: () => set({ subtaskErrors: ["", ""] }),
-
-        // UI helper to standardize IconCross styling everywhere
-        getCrossIconClass: (hasError) =>
-          hasError ? "text-danger" : "text-[#828FA3] group-hover:text-danger",
       }),
       {
         name: "kanban-task-manager",

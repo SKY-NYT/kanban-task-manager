@@ -12,7 +12,7 @@ export default function TaskView() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { data, moveTask, updateTask } = useKanbanStore();
+  const { data, moveTask, updateTask, deleteTask } = useKanbanStore();
 
   const boards = data.boards ?? [];
 
@@ -37,21 +37,14 @@ export default function TaskView() {
   }));
 
   const handleEdit = () => {
-    const backgroundLocation =
-      (location.state as { backgroundLocation?: unknown } | null)
-        ?.backgroundLocation ?? location;
-    navigate(`/boards/${boardId}/tasks/${cIndex}/${tIndex}/edit`, {
-      state: { backgroundLocation },
-    });
+    // Task editing form (Lab 2) was removed.
+    // Keep UI stable but do not route to deleted components.
+    return;
   };
 
   const handleDelete = () => {
-    const backgroundLocation =
-      (location.state as { backgroundLocation?: unknown } | null)
-        ?.backgroundLocation ?? location;
-    navigate(`/boards/${boardId}/tasks/${cIndex}/${tIndex}/delete`, {
-      state: { backgroundLocation },
-    });
+    deleteTask(bIndex, cIndex, tIndex);
+    navigate(`/boards/${boardId}`, { replace: true });
   };
 
   return (

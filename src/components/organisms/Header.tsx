@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { Text } from "../atoms/Text";
 import Button from "../atoms/Buttons";
@@ -14,7 +14,6 @@ import MobileBoardsModal from "../molecules/MobileBoardsModal";
 export default function Header() {
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const { logout } = useAuth();
   const { data, sidebarVisible } = useKanbanStore();
   const [isMobileBoardsOpen, setIsMobileBoardsOpen] = useState(false);
@@ -32,36 +31,10 @@ export default function Header() {
     navigate("/login", { replace: true });
   };
 
-  const handleEditBoard = () => {
-    if (!boardId) return;
-    navigate(`/boards/${boardId}/edit`, {
-      state: { backgroundLocation: location },
-    });
-  };
-
-  const handleDeleteBoard = () => {
-    if (!boardId) return;
-    navigate(`/boards/${boardId}/delete`, {
-      state: { backgroundLocation: location },
-    });
-  };
-
   const handleAddTask = () => {
-    if (boardId) {
-      navigate(`/boards/${boardId}/tasks/new`, {
-        state: { backgroundLocation: location },
-      });
-      return;
-    }
-
-    if (boards.length > 0)
-      navigate(`/boards/0/tasks/new`, {
-        state: { backgroundLocation: location },
-      });
-    else
-      navigate("/boards/new", {
-        state: { backgroundLocation: location },
-      });
+    // Task creation form (Lab 2) was removed.
+    // Keep UI stable but do not route to deleted components.
+    return;
   };
 
   return (
@@ -152,13 +125,9 @@ export default function Header() {
               {!isDashboard && (
                 <Menu
                   ariaLabel="Options"
-                  editLabel="Edit Board"
-                  deleteLabel="Delete Board"
                   logoutLabel="Logout"
                   iconClassName="fill-preset-gray-300"
                   buttonClassName="p-2 group cursor-pointer"
-                  onEdit={handleEditBoard}
-                  onDelete={handleDeleteBoard}
                   onLogout={handleLogout}
                   className="right-0 h-35"
                 />

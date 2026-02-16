@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Text } from "../atoms/Text";
 import { Logo } from "../molecules/Logo";
 import Iconboard from "../../assets/images/icon-board.svg?react";
@@ -9,7 +9,6 @@ import IconLightTheme from "../../assets/images/icon-light-theme.svg?react";
 import { useKanbanStore } from "../../store/useKanbanStore";
 
 export default function Sidebar() {
-  const location = useLocation();
   const { data, sidebarVisible, toggleSidebar } = useKanbanStore();
   const boards = data.boards ?? [];
   const { theme, toggleTheme } = useKanbanStore();
@@ -63,10 +62,12 @@ export default function Sidebar() {
             ))}
 
             <li className="pl-8 py-4">
-              <NavLink
-                to="/boards/new"
+              <button
                 type="button"
-                state={{ backgroundLocation: location }}
+                onClick={() => {
+                  // Create-board modal/page was removed; no routing.
+                  return;
+                }}
                 className="flex items-center gap-4 text-primary hover:opacity-70 transition-opacity"
               >
                 <Iconboard />
@@ -74,7 +75,7 @@ export default function Sidebar() {
                 <Text variant="p3" className="font-bold hover:cursor-pointer">
                   + Create New Board
                 </Text>
-              </NavLink>
+              </button>
             </li>
           </ul>
         </nav>
