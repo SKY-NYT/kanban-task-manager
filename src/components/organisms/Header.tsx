@@ -36,8 +36,7 @@ export default function Header() {
   };
 
   const handleAddTask = () => {
-    // Task creation form (Lab 2) was removed.
-    // Keep UI stable but do not route to deleted components.
+    
     return;
   };
 
