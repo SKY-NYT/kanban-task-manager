@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import boardData from "../data/data.json";
+import { fetchBoardsFromJsonPlaceholder } from "../api/jsonPlaceholderKanban";
 import type { Board, Column, Task } from "../types/types";
 
 export type ThemeMode = "light" | "dark";
@@ -9,13 +9,23 @@ export type Data = {
   boards: Board[];
 };
 
+export type RemoteDataStatus = {
+  isLoading: boolean;
+  error: string | null;
+  hasFetched: boolean;
+};
+
 export type KanbanStoreState = {
   data: Data;
+  remote: RemoteDataStatus;
   sidebarVisible: boolean;
   theme: ThemeMode;
   isLoggedIn: boolean;
 
   setData: (next: Data | ((prev: Data) => Data)) => void;
+
+  fetchRemoteData: () => Promise<void>;
+  ensureRemoteDataLoaded: () => Promise<void>;
   setSidebarVisible: (visible: boolean) => void;
   toggleSidebar: () => void;
   toggleTheme: () => void;
@@ -100,7 +110,12 @@ export const useKanbanStore = create<KanbanStoreState>()(
   devtools(
     persist(
       (set, get) => ({
-        data: boardData as unknown as Data,
+        data: { boards: [] },
+        remote: {
+          isLoading: false,
+          error: null,
+          hasFetched: false,
+        },
         sidebarVisible: true,
         theme: initialTheme,
         isLoggedIn: initialIsLoggedIn,
@@ -116,6 +131,62 @@ export const useKanbanStore = create<KanbanStoreState>()(
             false,
             "app/setData",
           ),
+
+        fetchRemoteData: async () => {
+          const state = get();
+          if (state.remote.isLoading) return;
+
+          set(
+            (s) => ({
+              remote: { ...s.remote, isLoading: true, error: null },
+            }),
+            false,
+            "api/fetchRemoteData/start",
+          );
+
+          try {
+            const boards = await fetchBoardsFromJsonPlaceholder();
+
+            set(
+              (s) => ({
+                data: { boards },
+                remote: {
+                  ...s.remote,
+                  isLoading: false,
+                  error: null,
+                  hasFetched: true,
+                },
+              }),
+              false,
+              "api/fetchRemoteData/success",
+            );
+          } catch (e) {
+            const message =
+              e instanceof Error
+                ? e.message
+                : "Something went wrong while loading boards.";
+
+            set(
+              (s) => ({
+                remote: {
+                  ...s.remote,
+                  isLoading: false,
+                  error: message,
+                  hasFetched: false,
+                },
+              }),
+              false,
+              "api/fetchRemoteData/error",
+            );
+          }
+        },
+
+        ensureRemoteDataLoaded: async () => {
+          const state = get();
+          if (state.remote.isLoading) return;
+          if (state.remote.hasFetched && state.data.boards.length > 0) return;
+          await state.fetchRemoteData();
+        },
 
         setSidebarVisible: (visible) =>
           set({ sidebarVisible: visible }, false, "app/setSidebarVisible"),
@@ -345,10 +416,9 @@ export const useKanbanStore = create<KanbanStoreState>()(
           hasError ? "text-danger" : "text-[#828FA3] group-hover:text-danger",
       }),
       {
-        name: "kanban-task-manager",
-        version: 2,
+        name: "kanban-task-manager-v3",
+        version: 3,
         partialize: (s) => ({
-          data: s.data,
           sidebarVisible: s.sidebarVisible,
           theme: s.theme,
           isLoggedIn: s.isLoggedIn,

@@ -1,7 +1,12 @@
-import { Link, useLocation, useParams } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { Text } from "../components/atoms/Text";
 import { useKanbanStore } from "../store/useKanbanStore";
-import { Outlet } from "react-router-dom";
 import Button from "../components/atoms/Buttons";
 import {
   DndContext,
@@ -96,6 +101,7 @@ function SortableTaskLink({
 
 export default function BoardView() {
   const { boardId } = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
   const { boards, sidebarVisible, moveTask } = useKanbanStore(
     useShallow((s) => ({
@@ -156,9 +162,17 @@ export default function BoardView() {
       >
         <div className="text-center">
           <Text variant="p2" className="text-gray-400 mb-6">
-            This account has no boards.
+            This board is empty. Create a new column to get started.
           </Text>
-          <Button variant="primary" size="md">
+          <Button
+            variant="primary"
+            size="md"
+            onClick={() =>
+              navigate("/boards/new", {
+                state: { backgroundLocation: location },
+              })
+            }
+          >
             + Create New Board
           </Button>
         </div>
@@ -244,7 +258,7 @@ export default function BoardView() {
           })}
 
           <Link
-            to={`/boards/${index}/edit`}
+            to={`/boards/${index}/tasks/new`}
             state={{ backgroundLocation: location }}
             type="button"
             className="cursor-pointer
@@ -257,7 +271,7 @@ export default function BoardView() {
               variant="p1"
               className="text-gray-400 group-hover:text-primary transition-colors"
             >
-              + New Column
+              + New Task
             </Text>
           </Link>
         </div>
