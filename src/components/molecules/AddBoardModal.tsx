@@ -49,7 +49,7 @@ export default function AddBoardModal() {
   };
 
   return (
-    /* BACKDROP */
+   
     <Modal onClose={handleClose}>
       <div className="flex flex-col gap-6">
         <Text variant="p2" className="text-foreground">
