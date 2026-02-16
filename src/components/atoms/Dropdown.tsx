@@ -29,7 +29,7 @@ export default function Dropdown({
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const menuRef = useRef<HTMLUListElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({});
   const selectedOption = options.find((opt) => opt.value === value);
 
@@ -165,60 +165,113 @@ export default function Dropdown({
           {label}
         </Text>
       )}
-      <button
-        ref={buttonRef}
-        type="button"
-        onClick={() => {
-          const nextOpen = !isOpen;
-          if (nextOpen && buttonRef.current) {
-            const rect = buttonRef.current.getBoundingClientRect();
-            // Provide an initial position immediately to avoid a visible "snap".
-            setMenuStyle(computeMenuStyle(rect, 120));
-          }
-          setIsOpen(nextOpen);
-        }}
-        className={`flex h-10 w-full items-center justify-between rounded-sm border px-4 transition-all
+      {isOpen ? (
+        <button
+          aria-label="Toggle dropdown menu"
+          ref={buttonRef}
+          type="button"
+          aria-haspopup="listbox"
+          aria-expanded="true"
+          onClick={() => {
+            const nextOpen = !isOpen;
+            if (nextOpen && buttonRef.current) {
+              const rect = buttonRef.current.getBoundingClientRect();
+              setMenuStyle(computeMenuStyle(rect, 120));
+            }
+            setIsOpen(nextOpen);
+          }}
+          className={`flex h-10 w-full items-center justify-between rounded-sm border px-4 transition-all
           ${isOpen ? "border-primary bg-background-secondary" : "border-[#828fa340] bg-transparent"} hover:border-primary`}
-      >
-        <Text
-          variant="p5"
-          className={!selectedOption ? "text-gray-400" : "text-foreground"}
         >
-          {selectedOption ? selectedOption.label : placeholder}
-        </Text>
+          <Text
+            variant="p5"
+            className={!selectedOption ? "text-gray-400" : "text-foreground"}
+          >
+            {selectedOption ? selectedOption.label : placeholder}
+          </Text>
 
-        {isOpen ? (
           <Iconchevronup className="transition-transform" />
-        ) : (
+        </button>
+      ) : (
+        <button
+          aria-label="Toggle dropdown menu"
+          ref={buttonRef}
+          type="button"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          onClick={() => {
+            const nextOpen = !isOpen;
+            if (nextOpen && buttonRef.current) {
+              const rect = buttonRef.current.getBoundingClientRect();
+              setMenuStyle(computeMenuStyle(rect, 120));
+            }
+            setIsOpen(nextOpen);
+          }}
+          className={`flex h-10 w-full items-center justify-between rounded-sm border px-4 transition-all
+          ${isOpen ? "border-primary bg-background-secondary" : "border-[#828fa340] bg-transparent"} hover:border-primary`}
+        >
+          <Text
+            variant="p5"
+            className={!selectedOption ? "text-gray-400" : "text-foreground"}
+          >
+            {selectedOption ? selectedOption.label : placeholder}
+          </Text>
+
           <Iconchevrondown className="transition-transform" />
-        )}
-      </button>
+        </button>
+      )}
 
       {isOpen &&
         createPortal(
-          <ul
+          <div
             ref={menuRef}
             style={menuStyle}
+            role="listbox"
+            aria-label={label ? `${label} options` : "Options"}
             className="max-h-30 overflow-y-auto rounded-lg bg-todo-background p-4 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)] flex flex-col gap-2"
           >
-            {options.map((opt) => (
-              <li
-                key={opt.value}
-                onClick={() => {
-                  onChange(opt.value);
-                  setIsOpen(false);
-                }}
-                className="group cursor-pointer"
-              >
-                <Text
-                  variant="p6"
-                  className="text-gray-400 group-hover:text-primary transition-colors"
+            {options.map((opt) =>
+              opt.value === value ? (
+                <button
+                  key={opt.value}
+                  type="button"
+                  role="option"
+                  aria-selected="true"
+                  className="group w-full text-left cursor-pointer"
+                  onClick={() => {
+                    onChange(opt.value);
+                    setIsOpen(false);
+                  }}
                 >
-                  {opt.label}
-                </Text>
-              </li>
-            ))}
-          </ul>,
+                  <Text
+                    variant="p6"
+                    className="text-gray-400 group-hover:text-primary transition-colors"
+                  >
+                    {opt.label}
+                  </Text>
+                </button>
+              ) : (
+                <button
+                  key={opt.value}
+                  type="button"
+                  role="option"
+                  aria-selected="false"
+                  className="group w-full text-left cursor-pointer"
+                  onClick={() => {
+                    onChange(opt.value);
+                    setIsOpen(false);
+                  }}
+                >
+                  <Text
+                    variant="p6"
+                    className="text-gray-400 group-hover:text-primary transition-colors"
+                  >
+                    {opt.label}
+                  </Text>
+                </button>
+              ),
+            )}
+          </div>,
           document.body,
         )}
     </div>
