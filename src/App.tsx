@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "./components/templates/MainLayout";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
+import Spinner from "./components/atoms/Spinner";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const BoardView = lazy(() => import("./pages/BoardView"));
@@ -11,7 +12,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 export default function App() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<Spinner />}>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route
