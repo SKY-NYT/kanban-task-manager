@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { Text } from "../components/atoms/Text";
 import { useApp } from "../hooks/useApp";
 import Button from "../components/atoms/Buttons";
@@ -8,7 +8,7 @@ export default function BoardView() {
   const { data } = useApp();
   const boards = data.boards ?? [];
   const index = boardId ? Number(boardId) : 0;
-  const board = boards[index];
+  const board = Number.isInteger(index) ? boards[index] : undefined;
   if (boards.length === 0) {
     return (
       <div className="h-full flex items-center justify-center bg-background">
@@ -22,6 +22,10 @@ export default function BoardView() {
         </div>
       </div>
     );
+  }
+
+  if (!board) {
+    return <Navigate to="/404" replace />;
   }
   return (
     <div className="h-full overflow-x-auto overflow-y-auto bg-background">
