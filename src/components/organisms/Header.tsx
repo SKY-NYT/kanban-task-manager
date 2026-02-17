@@ -29,7 +29,7 @@ export default function Header() {
   const currentBoard = boardId ? boards[Number(boardId)] : null;
   const displayTitle = isDashboard
     ? "Dashboard"
-    : (currentBoard?.name ?? "Platform Launch");
+    : (currentBoard?.name ?? "Board");
 
   const handleLogout = () => {
     logout();

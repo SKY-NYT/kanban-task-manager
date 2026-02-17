@@ -5,6 +5,7 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
+import { useEffect } from "react";
 import { Text } from "../components/atoms/Text";
 import { useKanbanStore } from "../store/useKanbanStore";
 import Button from "../components/atoms/Buttons";
@@ -103,15 +104,24 @@ export default function BoardView() {
   const { boardId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { boards, sidebarVisible, moveTask } = useKanbanStore(
-    useShallow((s) => ({
-      boards: s.data.boards,
-      sidebarVisible: s.sidebarVisible,
-      moveTask: s.moveTask,
-    })),
-  );
+  const { boards, sidebarVisible, moveTask, remote, fetchRemoteData } =
+    useKanbanStore(
+      useShallow((s) => ({
+        boards: s.data.boards,
+        sidebarVisible: s.sidebarVisible,
+        moveTask: s.moveTask,
+        remote: s.remote,
+        fetchRemoteData: s.fetchRemoteData,
+      })),
+    );
   const index = boardId ? Number(boardId) : 0;
-  const board = boards[index];
+  const board =
+    Number.isFinite(index) && index >= 0 ? boards[index] : undefined;
+
+  useEffect(() => {
+    if (!boardId) return;
+    if (!Number.isFinite(index)) navigate("/404", { replace: true });
+  }, [boardId, index, navigate]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -155,6 +165,43 @@ export default function BoardView() {
     });
   };
 
+  if (remote.isLoading && boards.length === 0) {
+    return (
+      <main
+        className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "md:pl-65 lg:pl-75" : "pl-0"}`}
+      >
+        <div className="text-center">
+          <Text variant="p2" className="text-gray-400 mb-2">
+            Loading board…
+          </Text>
+          <Text variant="p5" className="text-preset-gray-300">
+            Fetching tasks from the API.
+          </Text>
+        </div>
+      </main>
+    );
+  }
+
+  if (remote.error && boards.length === 0) {
+    return (
+      <main
+        className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "md:pl-65 lg:pl-75" : "pl-0"}`}
+      >
+        <div className="text-center max-w-lg px-6">
+          <Text variant="p2" className="text-foreground mb-2">
+            Couldn’t load boards
+          </Text>
+          <Text variant="p5" className="text-preset-gray-300 mb-6">
+            {remote.error}
+          </Text>
+          <Button variant="primary" size="md" onClick={() => fetchRemoteData()}>
+            Retry
+          </Button>
+        </div>
+      </main>
+    );
+  }
+
   if (boards.length === 0) {
     return (
       <main
@@ -174,6 +221,27 @@ export default function BoardView() {
             }
           >
             + Create New Board
+          </Button>
+        </div>
+      </main>
+    );
+  }
+
+  if (!board) {
+    return (
+      <main
+        className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "md:pl-65 lg:pl-75" : "pl-0"}`}
+      >
+        <div className="text-center">
+          <Text variant="p2" className="text-gray-400 mb-6">
+            Board not found.
+          </Text>
+          <Button
+            variant="primary"
+            size="md"
+            onClick={() => navigate("/", { replace: true })}
+          >
+            Back to Dashboard
           </Button>
         </div>
       </main>

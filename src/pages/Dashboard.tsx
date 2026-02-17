@@ -7,12 +7,51 @@ import { useShallow } from "zustand/shallow";
 export default function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { boards, sidebarVisible } = useKanbanStore(
+  const { boards, sidebarVisible, remote, fetchRemoteData } = useKanbanStore(
     useShallow((s) => ({
       boards: s.data.boards,
       sidebarVisible: s.sidebarVisible,
+      remote: s.remote,
+      fetchRemoteData: s.fetchRemoteData,
     })),
   );
+
+  if (remote.isLoading && boards.length === 0) {
+    return (
+      <main
+        className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "md:pl-65 lg:pl-75" : "pl-0"}`}
+      >
+        <div className="text-center">
+          <Text variant="p2" className="text-gray-400 mb-2">
+            Loading boards…
+          </Text>
+          <Text variant="p5" className="text-preset-gray-300">
+            Fetching tasks from the API.
+          </Text>
+        </div>
+      </main>
+    );
+  }
+
+  if (remote.error && boards.length === 0) {
+    return (
+      <main
+        className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "md:pl-65 lg:pl-75" : "pl-0"}`}
+      >
+        <div className="text-center max-w-lg px-6">
+          <Text variant="p2" className="text-foreground mb-2">
+            Couldn’t load boards
+          </Text>
+          <Text variant="p5" className="text-preset-gray-300 mb-6">
+            {remote.error}
+          </Text>
+          <Button variant="primary" size="md" onClick={() => fetchRemoteData()}>
+            Retry
+          </Button>
+        </div>
+      </main>
+    );
+  }
 
   if (boards.length === 0) {
     return (
