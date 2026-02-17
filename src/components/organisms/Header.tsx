@@ -67,22 +67,16 @@ export default function Header() {
       </div>
 
       <div className="flex items-center gap-4 cursor-pointer">
-        <Button
-          variant="primary"
-          size="md"
-          className=" hidden md:block  "
-          disabled
-        >
+        <Button variant="primary" size="md" className=" hidden md:block  ">
           + Add New Task
         </Button>
 
         <button
           type="button"
-          disabled
-          className="md:hidden bg-primary w-12 h-12 rounded-full flex items-center justify-center hover:bg-primary-hover"
+          className="md:hidden bg-primary w-12 h-8 rounded-full flex items-center justify-center hover:bg-primary-hover text-preset-black"
           aria-label="Add new task"
         >
-          <IconAddTaskMobile className="fill-white" />
+          <IconAddTaskMobile className="w-3 h-3" />
         </button>
 
         <div className="flex items-center gap-2">

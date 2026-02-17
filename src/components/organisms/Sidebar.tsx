@@ -17,7 +17,7 @@ export default function Sidebar() {
     <>
       {sidebarVisible && (
         <div
-          className="fixed inset-0 z-50 bg-black/50 md:hidden"
+          className="fixed left-0 right-0 bottom-0 top-16 z-50 bg-black/50 md:hidden"
           onClick={toggleSidebar}
         />
       )}
