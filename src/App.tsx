@@ -8,6 +8,8 @@ import {
 } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
+import { Text } from "./components/atoms/Text";
+import Spinner from "./components/atoms/Spinner";
 
 const MainLayout = lazy(() => import("./components/templates/MainLayout"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -49,7 +51,23 @@ export default function App() {
 
   return (
     <>
-      <Suspense fallback={null}>
+      <Suspense
+        fallback={
+          <div className="fixed inset-0 flex items-center justify-center bg-background">
+            <div className="text-center flex flex-col items-center gap-4">
+              <Spinner size="lg" />
+              <div>
+                <Text variant="p2" className="text-gray-400 mb-2">
+                  Loading…
+                </Text>
+                <Text variant="p5" className="text-preset-gray-300">
+                  Preparing the dashboard.
+                </Text>
+              </div>
+            </div>
+          </div>
+        }
+      >
         <Routes location={backgroundLocation ?? location}>
           <Route path="/login" element={<Login />} />
 

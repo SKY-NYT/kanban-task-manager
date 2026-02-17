@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useKanbanStore } from "../store/useKanbanStore";
 import { Text } from "../components/atoms/Text";
 import Button from "../components/atoms/Buttons";
+import Spinner from "../components/atoms/Spinner";
 import { useShallow } from "zustand/shallow";
 
 export default function Dashboard() {
@@ -21,13 +22,16 @@ export default function Dashboard() {
       <main
         className={`fixed inset-0 flex items-center justify-center bg-background ${sidebarVisible ? "md:pl-65 lg:pl-75" : "pl-0"}`}
       >
-        <div className="text-center">
-          <Text variant="p2" className="text-gray-400 mb-2">
-            Loading boards…
-          </Text>
-          <Text variant="p5" className="text-preset-gray-300">
-            Fetching tasks from the API.
-          </Text>
+        <div className="text-center flex flex-col items-center gap-4">
+          <Spinner label="Loading boards" />
+          <div>
+            <Text variant="p2" className="text-gray-400 mb-2">
+              Loading boards…
+            </Text>
+            <Text variant="p5" className="text-preset-gray-300">
+              Fetching tasks from the API.
+            </Text>
+          </div>
         </div>
       </main>
     );
