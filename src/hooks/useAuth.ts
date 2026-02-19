@@ -8,10 +8,7 @@ export type AuthApi = {
 };
 
 export function useAuth(): AuthApi {
-  const isLoggedIn = useKanbanStore((s) => s.isLoggedIn);
-  const hasHydrated = useKanbanStore((s) => s.hasHydrated);
-  const login = useKanbanStore((s) => s.login);
-  const logout = useKanbanStore((s) => s.logout);
+  const {isLoggedIn, hasHydrated, login, logout} = useKanbanStore();
 
   return { isLoggedIn, hasHydrated, login, logout };
 }
