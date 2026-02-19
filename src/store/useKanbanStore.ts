@@ -335,12 +335,12 @@ export const useKanbanStore = create<KanbanStoreState>()(
           );
         },
 
-        // UI (global) - Subtask validation errors
+        
         subtaskErrors: ["", ""],
         setSubtaskErrors: (errors) => set({ subtaskErrors: errors }),
         resetSubtaskErrors: () => set({ subtaskErrors: ["", ""] }),
 
-        // UI helper to standardize IconCross styling everywhere
+        
         getCrossIconClass: (hasError) =>
           hasError ? "text-danger" : "text-[#828FA3] group-hover:text-danger",
       }),
