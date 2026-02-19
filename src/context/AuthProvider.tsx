@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { AuthContext, type AuthContextType } from "./AuthContext";
 
@@ -10,13 +10,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
   );
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    localStorage.setItem("isLoggedIn", isLoggedIn ? "true" : "false");
-  }, [isLoggedIn]);
+ 
 
-  const login = useCallback(() => setIsLoggedIn(true), []);
-  const logout = useCallback(() => setIsLoggedIn(false), []);
+  const login = useCallback(() => {
+    setIsLoggedIn(true);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("isLoggedIn", "true");
+    }
+  }, []);
+  const logout = useCallback(() => {
+    setIsLoggedIn(false);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("isLoggedIn", "false");
+    }
+
+  }, []);
+  
 
   const value: AuthContextType = useMemo(
     () => ({
