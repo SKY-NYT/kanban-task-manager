@@ -6,14 +6,17 @@ import {
   useLocation,
   type Location,
 } from "react-router-dom";
-import MainLayout from "./components/templates/MainLayout";
-import Dashboard from "./pages/Dashboard";
-import BoardView from "./pages/BoardView";
-import TaskView from "./components/molecules/TaskView";
-import Admin from "./pages/Admin";
-import Login from "./pages/Login";
-import NotFound from "./pages/NotFound";
+import { lazy, Suspense } from "react";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
+import Spinner from "./components/atoms/Spinner";
+
+const MainLayout = lazy(() => import("./components/templates/MainLayout"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const BoardView = lazy(() => import("./pages/BoardView"));
+const TaskView = lazy(() => import("./components/molecules/TaskView"));
+const Admin = lazy(() => import("./pages/Admin"));
+const Login = lazy(() => import("./pages/Login"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 function ProtectedOutlet() {
   return (
@@ -29,7 +32,13 @@ export default function App() {
   const backgroundLocation = state?.backgroundLocation;
 
   return (
-    <>
+    <Suspense
+      fallback={
+        <div className="fixed inset-0 bg-background">
+          <Spinner />
+        </div>
+      }
+    >
       <Routes location={backgroundLocation ?? location}>
         <Route path="/login" element={<Login />} />
 
@@ -42,7 +51,6 @@ export default function App() {
         >
           <Route index element={<Dashboard />} />
 
-          
           <Route path="boards/:boardId" element={<BoardView />} />
 
           <Route
@@ -67,6 +75,6 @@ export default function App() {
           </Route>
         </Routes>
       )}
-    </>
+    </Suspense>
   );
 }
