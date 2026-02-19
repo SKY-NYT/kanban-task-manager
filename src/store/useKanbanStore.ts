@@ -17,7 +17,6 @@ export type KanbanStoreState = {
 
   setData: (next: Data | ((prev: Data) => Data)) => void;
   setSidebarVisible: (visible: boolean) => void;
-  toggleSidebar: () => void;
   toggleTheme: () => void;
 
   login: () => void;
@@ -119,12 +118,7 @@ export const useKanbanStore = create<KanbanStoreState>()(
 
         setSidebarVisible: (visible) =>
           set({ sidebarVisible: visible }, false, "app/setSidebarVisible"),
-        toggleSidebar: () =>
-          set(
-            (s) => ({ sidebarVisible: !s.sidebarVisible }),
-            false,
-            "app/toggleSidebar",
-          ),
+        
         toggleTheme: () =>
           set(
             (s) => {
