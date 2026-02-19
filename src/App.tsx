@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
+import Spinner from "./components/atoms/Spinner";
 
 const MainLayout = lazy(() => import("./components/templates/MainLayout"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -49,7 +50,7 @@ export default function App() {
 
   return (
     <>
-      <Suspense fallback={null}>
+      <Suspense fallback={<Spinner />}>
         <Routes location={backgroundLocation ?? location}>
           <Route path="/login" element={<Login />} />
 
@@ -62,7 +63,7 @@ export default function App() {
           >
             <Route index element={<Dashboard />} />
 
-            {/* Board pages */}
+            
             <Route path="boards/:boardId" element={<BoardView />} />
 
             <Route path="boards/new" element={<AddBoardModal />} />
@@ -95,7 +96,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/404" replace />} />
         </Routes>
 
-        {/* When a modal is opened from within the app, keep the previous screen rendered as the background */}
+        
         {backgroundLocation && (
           <Routes>
             <Route element={<ProtectedOutlet />}>
