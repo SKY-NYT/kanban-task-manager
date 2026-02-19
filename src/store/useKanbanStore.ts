@@ -14,13 +14,17 @@ export type KanbanStoreState = {
   sidebarVisible: boolean;
   theme: ThemeMode;
   isLoggedIn: boolean;
+  hasHydrated: boolean;
 
   setData: (next: Data | ((prev: Data) => Data)) => void;
   setSidebarVisible: (visible: boolean) => void;
+  toggleSidebar: () => void;
   toggleTheme: () => void;
 
   login: () => void;
   logout: () => void;
+
+  setHasHydrated: (hydrated: boolean) => void;
 
   addBoard: (name: string) => void;
   deleteBoard: (boardIndex: number) => void;
@@ -60,10 +64,6 @@ function clampIndex(index: number, maxExclusive: number) {
 
 function getInitialTheme(): ThemeMode {
   if (typeof window === "undefined") return "light";
-
-  const saved = window.localStorage.getItem("theme");
-  if (saved === "light" || saved === "dark") return saved;
-
   return window.matchMedia?.("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
@@ -75,25 +75,10 @@ function applyThemeToDocument(theme: ThemeMode) {
   const root = window.document.documentElement;
   if (theme === "dark") root.classList.add("dark");
   else root.classList.remove("dark");
-
-  window.localStorage.setItem("theme", theme);
-}
-
-function getInitialIsLoggedIn(): boolean {
-  if (typeof window === "undefined") return false;
-  return window.localStorage.getItem("isLoggedIn") === "true";
-}
-
-function applyAuthToStorage(isLoggedIn: boolean) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem("isLoggedIn", isLoggedIn ? "true" : "false");
 }
 
 const initialTheme = getInitialTheme();
 applyThemeToDocument(initialTheme);
-
-const initialIsLoggedIn = getInitialIsLoggedIn();
-applyAuthToStorage(initialIsLoggedIn);
 
 export const useKanbanStore = create<KanbanStoreState>()(
   devtools(
@@ -102,7 +87,11 @@ export const useKanbanStore = create<KanbanStoreState>()(
         data: boardData as unknown as Data,
         sidebarVisible: true,
         theme: initialTheme,
-        isLoggedIn: initialIsLoggedIn,
+        isLoggedIn: false,
+        hasHydrated: false,
+
+        setHasHydrated: (hydrated) =>
+          set({ hasHydrated: hydrated }, false, "app/setHasHydrated"),
 
         setData: (next) =>
           set(
@@ -118,7 +107,14 @@ export const useKanbanStore = create<KanbanStoreState>()(
 
         setSidebarVisible: (visible) =>
           set({ sidebarVisible: visible }, false, "app/setSidebarVisible"),
-        
+
+        toggleSidebar: () =>
+          set(
+            (s) => ({ sidebarVisible: !s.sidebarVisible }),
+            false,
+            "app/toggleSidebar",
+          ),
+
         toggleTheme: () =>
           set(
             (s) => {
@@ -131,24 +127,8 @@ export const useKanbanStore = create<KanbanStoreState>()(
             "app/toggleTheme",
           ),
 
-        login: () =>
-          set(
-            () => {
-              applyAuthToStorage(true);
-              return { isLoggedIn: true };
-            },
-            false,
-            "auth/login",
-          ),
-        logout: () =>
-          set(
-            () => {
-              applyAuthToStorage(false);
-              return { isLoggedIn: false };
-            },
-            false,
-            "auth/logout",
-          ),
+        login: () => set(() => ({ isLoggedIn: true }), false, "auth/login"),
+        logout: () => set(() => ({ isLoggedIn: false }), false, "auth/logout"),
 
         addBoard: (name) =>
           set(
@@ -329,12 +309,10 @@ export const useKanbanStore = create<KanbanStoreState>()(
           );
         },
 
-        
         subtaskErrors: ["", ""],
         setSubtaskErrors: (errors) => set({ subtaskErrors: errors }),
         resetSubtaskErrors: () => set({ subtaskErrors: ["", ""] }),
 
-        
         getCrossIconClass: (hasError) =>
           hasError ? "text-danger" : "text-[#828FA3] group-hover:text-danger",
       }),
@@ -347,10 +325,11 @@ export const useKanbanStore = create<KanbanStoreState>()(
           theme: s.theme,
           isLoggedIn: s.isLoggedIn,
         }),
-        onRehydrateStorage: () => (state) => {
-          if (!state) return;
-          applyThemeToDocument(state.theme);
-          applyAuthToStorage(state.isLoggedIn);
+        onRehydrateStorage: (state) => (hydratedState) => {
+          const nextState = hydratedState ?? state;
+          if (!nextState) return;
+          applyThemeToDocument(nextState.theme);
+          nextState.setHasHydrated(true);
         },
       },
     ),

@@ -7,8 +7,10 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, hasHydrated } = useAuth();
   const location = useLocation();
+
+  if (!hasHydrated) return null;
 
   if (!isLoggedIn) {
     return <Navigate to="/login" replace state={{ from: location }} />;
