@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, test, expect, vi, beforeEach } from "vitest";
 import axios from "axios";
 import { useKanbanStore } from "../../store/useKanbanStore";
 
@@ -16,7 +16,7 @@ describe("KanbanStore Remote Actions", () => {
     });
   });
 
-  it("successfully fetches and normalizes board data", async () => {
+  test("successfully fetches and normalizes board data", async () => {
     const mockApiResponse = {
       data: [
         {
@@ -34,7 +34,7 @@ describe("KanbanStore Remote Actions", () => {
     expect(state.data.boards[0].name).toBe("Launch Plan");
   });
 
-  it("handles API errors gracefully", async () => {
+  test("handles API errors gracefully", async () => {
 
     mockedGet.mockRejectedValueOnce(new Error("Network Error"));
 
