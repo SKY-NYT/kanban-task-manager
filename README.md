@@ -1,5 +1,24 @@
 # React + TypeScript + Vite
 
+## Remote Kanban API (Lab)
+
+This app fetches boards/columns/tasks from a remote endpoint on first load.
+
+- Create a `.env` file (see `.env.example`)
+- Set `VITE_KANBAN_BOARDS_URL` to an endpoint that returns either:
+  - an array of boards: `[{ name, columns: [{ name, tasks: [...] }] }]`, or
+  - an object: `{ boards: [...] }`
+
+Quick mock option: MockAPI.io
+
+- Create a project + a `boards` resource
+- Seed it with items shaped like your `Board` type (nested `columns` and `tasks`)
+  - You can use the sample data in `docs/mockapi/boards.seed.json`
+- Use the generated endpoint URL as `VITE_KANBAN_BOARDS_URL` (example):
+  - `https://<project>.mockapi.io/api/v1/boards`
+
+Optional: set `VITE_API_DELAY_MS=1500` to test loading states.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

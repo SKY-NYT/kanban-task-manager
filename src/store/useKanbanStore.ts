@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import { fetchBoardsFromJsonPlaceholder } from "../api/jsonPlaceholderKanban";
+import { fetchBoardsFromApi } from "../api/kanbanApi";
 import type { Board, Column, Task } from "../types/types";
 
 export type ThemeMode = "light" | "dark";
@@ -145,7 +145,7 @@ export const useKanbanStore = create<KanbanStoreState>()(
           );
 
           try {
-            const boards = await fetchBoardsFromJsonPlaceholder();
+            const boards = await fetchBoardsFromApi();
 
             set(
               (s) => ({
@@ -184,8 +184,7 @@ export const useKanbanStore = create<KanbanStoreState>()(
         ensureRemoteDataLoaded: async () => {
           const state = get();
           if (state.remote.isLoading) return;
-          // If we already have local boards (e.g. from persisted state), don't overwrite them.
-          if (state.data.boards.length > 0) return;
+          if (state.remote.hasFetched) return;
           await state.fetchRemoteData();
         },
 
@@ -420,7 +419,6 @@ export const useKanbanStore = create<KanbanStoreState>()(
         name: "kanban-task-manager-v3",
         version: 3,
         partialize: (s) => ({
-          data: s.data,
           sidebarVisible: s.sidebarVisible,
           theme: s.theme,
           isLoggedIn: s.isLoggedIn,
