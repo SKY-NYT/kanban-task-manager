@@ -45,7 +45,7 @@ describe("EditTaskModal", () => {
       ),
     });
 
-    // Change title
+    
     const titleInput = screen.getByLabelText(/title/i);
     await user.clear(titleInput);
     await user.type(titleInput, "New title");
@@ -60,12 +60,12 @@ describe("EditTaskModal", () => {
         return 0;
       });
 
-    // Submit
+  
     fireEvent.click(screen.getByRole("button", { name: /save changes/i }));
 
     expect(screen.getByRole("status")).toHaveTextContent("Changes saved.");
 
-    // Run the scheduled navigation
+    
     expect(scheduled).toBeTypeOf("function");
     act(() => {
       scheduled?.();

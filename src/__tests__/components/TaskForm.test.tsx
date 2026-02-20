@@ -38,7 +38,7 @@ describe("TaskForm", () => {
 
     await user.type(screen.getByLabelText(/title/i), "Write tests");
 
-    // Two default subtasks
+ 
     await user.type(screen.getByPlaceholderText(/make coffee/i), "Subtask 1");
     await user.type(screen.getByPlaceholderText(/drink coffee/i), "Subtask 2");
 
