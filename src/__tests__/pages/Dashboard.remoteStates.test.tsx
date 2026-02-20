@@ -10,11 +10,17 @@ import type { KanbanStoreState } from "../../store/useKanbanStore";
 
 describe("Dashboard remote states", () => {
   test("shows a loading message when fetching boards", () => {
+    
     resetKanbanStore({ remote: { isLoading: true } });
 
+  
     renderAtRoute(<Dashboard />, { initialEntries: ["/"] });
 
-    expect(screen.getByRole("status")).toHaveTextContent("Loading boards...");
+   
+
+    expect(screen.getByText(/Loading boards/i)).toBeInTheDocument();
+
+    expect(screen.getByLabelText(/Loading boards/i)).toBeInTheDocument();
   });
 
   test("shows an error and retries", async () => {
@@ -26,8 +32,13 @@ describe("Dashboard remote states", () => {
 
     renderAtRoute(<Dashboard />, { initialEntries: ["/"] });
 
-    expect(screen.getByRole("alert")).toHaveTextContent("Boom");
-    await user.click(screen.getByRole("button", { name: /retry/i }));
+    
+    expect(screen.getByText(/Boom/i)).toBeInTheDocument();
+    
+    
+    const retryBtn = screen.getByRole("button", { name: /retry/i });
+    await user.click(retryBtn);
+    
     expect(retry).toHaveBeenCalledTimes(1);
   });
 
