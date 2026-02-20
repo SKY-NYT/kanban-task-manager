@@ -2,10 +2,19 @@ import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import svgr from "vite-plugin-svgr";
+import path from "path/win32";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), svgr()],
+  resolve: {
+    alias: {
+
+      ...(process.env.NODE_ENV === 'test' && {
+        "\\.svg$": path.resolve(__dirname, "./src/test/svgMock.ts"),
+      }),
+    },
+  },
   test: {
     environment: "jsdom",
     setupFiles: ["./src/test/setup.ts"],

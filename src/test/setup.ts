@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom/vitest";
-import { afterEach } from "vitest";
+import { afterEach, vi } from "vitest";
 import { cleanup } from "@testing-library/react";
 
 afterEach(() => {
@@ -27,3 +27,11 @@ if (!window.matchMedia) {
     dispatchEvent: () => false,
   });
 }
+
+// src/test/setup.ts
+
+// Mock all SVG imports to return a simple string
+vi.mock('*.svg', () => ({
+  default: 'svg-url',
+  ReactComponent: 'svg-node'
+}));
