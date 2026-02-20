@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for components/atoms/SubtaskCheckbox.tsx</title>
+    <title>Code coverage report for components/atoms/Spinner.tsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/atoms</a> SubtaskCheckbox.tsx</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/atoms</a> Spinner.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">71.42% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>5/7</span>
             </div>
         
             
@@ -89,17 +89,10 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -113,7 +106,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -121,56 +115,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Text } from "./Text";
-import IconCheck from "../../assets/images/icon-check.svg?react";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">type SpinnerSize = "sm" | "md" | "lg";
 &nbsp;
-interface SubtaskCheckboxProps {
-  label: string;
-  isCompleted: boolean;
-  onToggle: () =&gt; void;
-}
+export default function Spinner({
+  size = "md",
+  className = "",
+  label = "Loading",
+}: {
+  size?: SpinnerSize;
+  className?: string;
+  label?: string;
+}) {
+  const sizeClass =
+    size === "sm"
+      ? <span class="branch-0 cbranch-no" title="branch not covered" >"h-5 w-5 border-2"</span>
+      : size === "lg"
+        ? <span class="branch-0 cbranch-no" title="branch not covered" >"h-12 w-12 border-4"</span>
+        : "h-8 w-8 border-4";
 &nbsp;
-export const SubtaskCheckbox = ({
-  label,
-  isCompleted,
-  onToggle,
-}: SubtaskCheckboxProps) =&gt; {
   return (
-    &lt;label className="flex items-center gap-4 w-full h-10 px-3 cursor-pointer rounded-sm bg-background hover:bg-[#635FC7]/25 transition-all"&gt;
-      &lt;span className="relative inline-flex h-4 w-4 items-center justify-center"&gt;
-        &lt;input
-          type="checkbox"
-          checked={isCompleted}
-          onChange={onToggle}
-          className="h-4 w-4 rounded-sm border  border-[#828fa340] appearance-none cursor-pointer checked:bg-primary checked:border-none"
-        /&gt;
-        {isCompleted &amp;&amp; (
-          &lt;IconCheck className="pointer-events-none absolute inset-0 m-auto h-2 w-2 " /&gt;
-        )}
-      &lt;/span&gt;
-      &lt;Text
-        variant="p6"
-        className={`${isCompleted ? "line-through opacity-50" : ""} text-foreground transition-all`}
-      &gt;
-        {label}
-      &lt;/Text&gt;
-    &lt;/label&gt;
+    &lt;div role="status" aria-label={label} className={className}&gt;
+      &lt;div
+        className={`${sizeClass} animate-spin rounded-full border-border border-t-primary`}
+      /&gt;
+    &lt;/div&gt;
   );
-};
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
