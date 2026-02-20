@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import { fetchBoardsFromJsonPlaceholder } from "../api/jsonPlaceholderKanban";
+import { fetchBoardsFromTrello } from "../api/trelloKanban";
 import type { Board, Column, Task } from "../types/types";
 
 export type ThemeMode = "light" | "dark";
@@ -141,11 +141,11 @@ export const useKanbanStore = create<KanbanStoreState>()(
               remote: { ...s.remote, isLoading: true, error: null },
             }),
             false,
-            "api/fetchRemoteData/start",
+            "api/trello/fetchRemoteData/start",
           );
 
           try {
-            const boards = await fetchBoardsFromJsonPlaceholder();
+            const boards = await fetchBoardsFromTrello();
 
             set(
               (s) => ({
@@ -158,7 +158,7 @@ export const useKanbanStore = create<KanbanStoreState>()(
                 },
               }),
               false,
-              "api/fetchRemoteData/success",
+              "api/trello/fetchRemoteData/success",
             );
           } catch (e) {
             const message =
@@ -176,7 +176,7 @@ export const useKanbanStore = create<KanbanStoreState>()(
                 },
               }),
               false,
-              "api/fetchRemoteData/error",
+              "api/trello/fetchRemoteData/error",
             );
           }
         },

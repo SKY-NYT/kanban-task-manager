@@ -43,6 +43,38 @@ export default defineConfig([
 ])
 ```
 
+  ## Kanban Remote Data (Trello)
+
+  This app can fetch boards from Trello using Trello's REST API.
+
+  ### Vercel (recommended)
+
+  Set these in your Vercel Project → Settings → Environment Variables (server-side, not exposed to the browser):
+
+  ```bash
+  TRELLO_KEY=your_trello_api_key
+  TRELLO_TOKEN=your_trello_token
+  ```
+
+  Then set these client-side (safe to expose) either in Vercel env vars or a local `.env.local`:
+
+  ```bash
+  # Choose one:
+  VITE_TRELLO_BOARD_ID=single_board_id
+  # or
+  VITE_TRELLO_BOARD_IDS=board_id_1,board_id_2
+
+  # Optional: artificial network delay in ms
+  VITE_API_DELAY_MS=0
+  ```
+
+  ### Local development
+
+  By default, the frontend calls the proxy endpoint at `/api/trello/...`.
+
+  - If you want to develop without a backend/proxy, you can optionally set `VITE_TRELLO_KEY` and `VITE_TRELLO_TOKEN` locally and the app will call Trello directly.
+  - Do not set `VITE_TRELLO_TOKEN` in production.
+
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
