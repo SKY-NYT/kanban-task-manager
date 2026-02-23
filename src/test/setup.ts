@@ -28,9 +28,9 @@ if (!window.matchMedia) {
   });
 }
 
-// src/test/setup.ts
 
-// Mock all SVG imports to return a simple string
+
+
 vi.mock('*.svg', () => ({
   default: 'svg-url',
   ReactComponent: 'svg-node'
