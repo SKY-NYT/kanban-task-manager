@@ -15,8 +15,7 @@ Object.defineProperty(window, "scrollTo", {
 
 if (!window.matchMedia) {
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (window as any).matchMedia = () => ({
+  (window as Window & typeof globalThis).matchMedia = () => ({
     matches: false,
     media: "",
     onchange: null,
