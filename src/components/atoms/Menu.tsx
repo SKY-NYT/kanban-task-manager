@@ -4,8 +4,8 @@ import IconVerticalEllipsis from "../../assets/images/icon-vertical-ellipsis.svg
 import { Text } from "./Text";
 
 type MenuProps = {
-  onEdit: () => void;
-  onDelete: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
   onLogout?: () => void;
   editLabel?: string;
   deleteLabel?: string;
@@ -126,39 +126,43 @@ export default function Menu({
             style={menuStyle}
             className={`flex flex-col gap-4 h-23.5 w-48 bg-menu-background p-3 ${className}`}
           >
-            <button
-              type="button"
-              role="menuitem"
-              onClick={() => {
-                setIsOpen(false);
-                onEdit();
-              }}
-              className="w-full text-left"
-            >
-              <Text
-                variant="p5"
-                className="text-gray-400 hover:text-primary transition-colors"
+            {onEdit && (
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => {
+                  setIsOpen(false);
+                  onEdit();
+                }}
+                className="w-full text-left"
               >
-                {editLabel}
-              </Text>
-            </button>
+                <Text
+                  variant="p5"
+                  className="text-gray-400 hover:text-primary transition-colors"
+                >
+                  {editLabel}
+                </Text>
+              </button>
+            )}
 
-            <button
-              type="button"
-              role="menuitem"
-              onClick={() => {
-                setIsOpen(false);
-                onDelete();
-              }}
-              className="mt-2 w-full text-left"
-            >
-              <Text
-                variant="p5"
-                className="text-red-500 hover:opacity-80 transition-opacity"
+            {onDelete && (
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => {
+                  setIsOpen(false);
+                  onDelete();
+                }}
+                className={`${onEdit ? "mt-2" : ""} w-full text-left`}
               >
-                {deleteLabel}
-              </Text>
-            </button>
+                <Text
+                  variant="p5"
+                  className="text-red-500 hover:opacity-80 transition-opacity"
+                >
+                  {deleteLabel}
+                </Text>
+              </button>
+            )}
 
             {onLogout && (
               <button
