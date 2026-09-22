@@ -1,8 +1,26 @@
+type SpinnerSize = "sm" | "md" | "lg";
 
-export default function Spinner() {
+export default function Spinner({
+  size = "md",
+  className = "",
+  label = "Loading",
+}: {
+  size?: SpinnerSize;
+  className?: string;
+  label?: string;
+}) {
+  const sizeClass =
+    size === "sm"
+      ? "h-5 w-5 border-2"
+      : size === "lg"
+        ? "h-12 w-12 border-4"
+        : "h-8 w-8 border-4";
+
   return (
-    <div className="flex h-screen w-full items-center justify-center">
-      <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-200 border-t-primary" />
+    <div role="status" aria-label={label} className={className}>
+      <div
+        className={`${sizeClass} animate-spin rounded-full border-border border-t-primary`}
+      />
     </div>
   );
 }

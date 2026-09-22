@@ -1,14 +1,24 @@
 import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
 import Header from "../organisms/Header";
 import Sidebar from "../organisms/Sidebar";
+import { useKanbanStore } from "../../store/useKanbanStore";
 
 export default function MainLayout() {
+  const ensureRemoteDataLoaded = useKanbanStore(
+    (s) => s.ensureRemoteDataLoaded,
+  );
+
+  useEffect(() => {
+    void ensureRemoteDataLoaded();
+  }, [ensureRemoteDataLoaded]);
+
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+    <div className="flex h-screen bg-background text-foreground  transition-colors duration-300">
       <Sidebar />
-      <div className="flex flex-col min-h-screen transition-all duration-300 ml-0 md:ml-65.25 lg:ml-75">
+      <div className="flex flex-1 flex-col">
         <Header />
-        <main className="flex-1 bg-background pt-16 md:pt-24 overflow-hidden">
+        <main className="flex-1 overflow-auto bg-[--color-background-secondary] dark:bg-[--color-dark-background-secondary] p-6">
           <Outlet />
         </main>
       </div>
