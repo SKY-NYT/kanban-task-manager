@@ -2,14 +2,13 @@ import { useKanbanStore } from "../store/useKanbanStore";
 
 export type AuthApi = {
   isLoggedIn: boolean;
+  hasHydrated: boolean;
   login: () => void;
   logout: () => void;
 };
 
 export function useAuth(): AuthApi {
-  const isLoggedIn = useKanbanStore((s) => s.isLoggedIn);
-  const login = useKanbanStore((s) => s.login);
-  const logout = useKanbanStore((s) => s.logout);
+  const {isLoggedIn, hasHydrated, login, logout} = useKanbanStore();
 
-  return { isLoggedIn, login, logout };
+  return { isLoggedIn, hasHydrated, login, logout };
 }

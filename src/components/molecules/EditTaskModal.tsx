@@ -47,6 +47,7 @@ export default function EditTaskModal() {
 
         {feedback && (
           <Text
+            key={feedback.message}
             variant="p6"
             className={
               (feedback.type === "success" ? "text-primary" : "text-danger") +

@@ -49,7 +49,6 @@ export default function AddBoardModal() {
   };
 
   return (
-   
     <Modal onClose={handleClose}>
       <div className="flex flex-col gap-6">
         <Text variant="p2" className="text-foreground">

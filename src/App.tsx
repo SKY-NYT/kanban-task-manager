@@ -80,7 +80,7 @@ export default function App() {
           >
             <Route index element={<Dashboard />} />
 
-            {/* Board pages */}
+            
             <Route path="boards/:boardId" element={<BoardView />} />
 
             <Route path="boards/new" element={<AddBoardModal />} />
@@ -113,7 +113,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/404" replace />} />
         </Routes>
 
-        {/* When a modal is opened from within the app, keep the previous screen rendered as the background */}
+        
         {backgroundLocation && (
           <Routes>
             <Route element={<ProtectedOutlet />}>
