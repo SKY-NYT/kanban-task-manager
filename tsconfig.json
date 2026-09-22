@@ -2,7 +2,8 @@
   "files": [],
   "compilerOptions": {
     "strict": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
   "references": [
     { "path": "./tsconfig.app.json" },
