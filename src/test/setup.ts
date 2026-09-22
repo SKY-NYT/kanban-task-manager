@@ -15,8 +15,7 @@ Object.defineProperty(window, "scrollTo", {
 
 if (!window.matchMedia) {
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (window as any).matchMedia = () => ({
+  (window as Window & typeof globalThis).matchMedia = () => ({
     matches: false,
     media: "",
     onchange: null,
@@ -28,9 +27,9 @@ if (!window.matchMedia) {
   });
 }
 
-// src/test/setup.ts
 
-// Mock all SVG imports to return a simple string
+
+
 vi.mock('*.svg', () => ({
   default: 'svg-url',
   ReactComponent: 'svg-node'

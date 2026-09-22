@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for components/atoms/Text.tsx</title>
+    <title>Code coverage report for components/atoms/Spinner.tsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/atoms</a> Text.tsx</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/atoms</a> Spinner.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">71.42% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>5/7</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -89,13 +89,7 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -107,56 +101,44 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">756x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">756x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">756x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">type TextVariant = "p1" | "p2" | "p3" | "p4" | "p5" | "p6";
-type TextProps&lt;T extends React.ElementType = "p"&gt; = {
-  as?: T;
-  variant?: TextVariant;
-  className?: string;
-  children: React.ReactNode;
-} &amp; Omit&lt;React.ComponentPropsWithoutRef&lt;T&gt;, "as" | "className" | "children"&gt;;
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">type SpinnerSize = "sm" | "md" | "lg";
 &nbsp;
-export function Text&lt;T extends React.ElementType = "p"&gt;({
-  as,
-  variant = "p3",
+export default function Spinner({
+  size = "md",
   className = "",
-  children,
-  ...rest
-}: TextProps&lt;T&gt;) {
-  const styles = {
-    p1: "text-h-xl",
-    p2: "text-h-lg ",
-    p3: "text-h-md",
-    p4: "text-h-sm",
-    p5: "text-body-lg",
-    p6: "text-body-md",
-  };
-&nbsp;
-  const Component = (as ?? "p") as React.ElementType;
+  label = "Loading",
+}: {
+  size?: SpinnerSize;
+  className?: string;
+  label?: string;
+}) {
+  const sizeClass =
+    size === "sm"
+      ? <span class="branch-0 cbranch-no" title="branch not covered" >"h-5 w-5 border-2"</span>
+      : size === "lg"
+        ? <span class="branch-0 cbranch-no" title="branch not covered" >"h-12 w-12 border-4"</span>
+        : "h-8 w-8 border-4";
 &nbsp;
   return (
-    &lt;Component className={`${styles[variant]} ${className}`} {...rest}&gt;
-      {children}
-    &lt;/Component&gt;
+    &lt;div role="status" aria-label={label} className={className}&gt;
+      &lt;div
+        className={`${sizeClass} animate-spin rounded-full border-border border-t-primary`}
+      /&gt;
+    &lt;/div&gt;
   );
 }
 &nbsp;</pre></td></tr></table></pre>
